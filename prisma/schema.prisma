@@ -1,0 +1,72 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  phonenumber String       @unique()
+  type        String
+  password    String
+  favorites   Favorite[]
+  watchLaters WatchLater[]
+}
+
+model Content {
+  id            Int          @id @default(autoincrement())
+  title         String
+  duration      Int
+  description   String
+  channelId     Int
+  typeId        Int
+  categoryId    Int
+  videoUrl      String
+  coverImageUrl String
+  channel       Channel      @relation(fields: [channelId], references: [id])
+  type          Type         @relation(fields: [typeId], references: [id])
+  category      Category     @relation(fields: [categoryId], references: [id])
+  favorites     Favorite[]
+  watchLaters   WatchLater[]
+}
+
+model Channel {
+  id       Int       @id @default(autoincrement())
+  name     String
+  status   Boolean
+  contents Content[]
+}
+
+model Type {
+  id       Int       @id @default(autoincrement())
+  name     String
+  contents Content[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  contents Content[]
+}
+
+model Favorite {
+  userId    Int
+  contentId Int
+  user      User    @relation(fields: [userId], references: [id])
+  content   Content @relation(fields: [contentId], references: [id])
+
+  @@id([userId, contentId])
+}
+
+model WatchLater {
+  userId    Int
+  contentId Int
+  user      User    @relation(fields: [userId], references: [id])
+  content   Content @relation(fields: [contentId], references: [id])
+
+  @@id([userId, contentId])
+}
