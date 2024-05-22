@@ -48,7 +48,7 @@ export default function App({data}:{data:Channel[]}) {
             header: 'Status',
             muiTableHeadCellProps: { style: { color: 'green' } }, 
             enableHiding: false, 
-            Cell:({cell})=><Box><SwitchSatus checked={cell.row.original.status}/></Box>
+            Cell:({cell})=><Box><SwitchSatus checked={cell.row.original.status} id={cell.row.original.id}/></Box>
           },
           {
             accessorKey: 'action', 
