@@ -16,8 +16,9 @@ import PrintIcon from '@mui/icons-material/Print';
 import AddChannel from './add_channel';
 import SwitchSatus from './switch';
 import Action from './action';
-import Stack from "@mui/material";
-
+import Pagination from '@/app/(home)/channel/components/pagination';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 export interface Channel {
     id:number,
     name: string;
@@ -44,9 +45,15 @@ export interface Channel {
 
 
 
-export default function App({data}:{data:Channel[]}) {
+export default function App({data,length}:{data:Channel[],length:number}) {
 
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+ 
   const  [open,setOpen]=useState(false)
+
   const handleClose = () => setOpen(false);
     const columns = useMemo<MRT_ColumnDef<Channel>[]>(
         () => [
@@ -84,10 +91,24 @@ export default function App({data}:{data:Channel[]}) {
   const table = useMaterialReactTable({
     columns,
     data, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
-    initialState: { showGlobalFilter: true },
-
+    initialState: { showGlobalFilter: true,pagination: { pageSize: 5, pageIndex: 1 } },
+    manualFiltering: true,
+  
+    
     
   });
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+   
+    const params = new URLSearchParams(searchParams);
+      params.set('page', '1');
+    if (term) {
+      params.set('query', term);
+    } else {
+      params.delete('query');
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, 600);
 
  
   return (
@@ -106,7 +127,14 @@ export default function App({data}:{data:Channel[]}) {
        
         })}
       >
-        <MRT_GlobalFilterTextField table={table} />
+        <MRT_GlobalFilterTextField  table={table}
+        
+         value={searchParams.get('query')?.toString()}
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}/>
+      
+      
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <MRT_ToggleFiltersButton table={table} />
@@ -129,14 +157,11 @@ export default function App({data}:{data:Channel[]}) {
           
         
       </Box>
-      <MRT_TableContainer table={table} />
+      <MRT_TableContainer table={table}  />
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <MRT_TablePagination table={table} />
         </Box>
-        <Box sx={{ display: 'grid', width: '100%' }}>
-          <MRT_ToolbarAlertBanner stackAlertBanner table={table} />
-        </Box>
+       <Pagination count={length} />
       </Box>
 
     </Box>
