@@ -37,7 +37,7 @@ model Content {
 model Channel {
   id       Int       @id @default(autoincrement())
   name     String
-  status   Boolean
+  status   Boolean   @default(true)
   contents Content[]
 }
 

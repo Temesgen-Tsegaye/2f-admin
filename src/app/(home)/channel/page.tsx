@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
-import App from './table'
-import { Channel } from './table';
+import App from './components/table'
+import { Channel } from './components/table';
 import {fetchChannels} from "@/lib/channel/fetch_channel"
 import  {Loading} from "@/component/global/table_loading"
   const data: Channel[] = [

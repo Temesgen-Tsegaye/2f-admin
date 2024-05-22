@@ -3,6 +3,7 @@ CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "phonenumber" TEXT NOT NULL,
     "type" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -26,6 +27,7 @@ CREATE TABLE "Content" (
 CREATE TABLE "Channel" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "Channel_pkey" PRIMARY KEY ("id")
 );
@@ -61,6 +63,9 @@ CREATE TABLE "WatchLater" (
 
     CONSTRAINT "WatchLater_pkey" PRIMARY KEY ("userId","contentId")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_phonenumber_key" ON "User"("phonenumber");
 
 -- AddForeignKey
 ALTER TABLE "Content" ADD CONSTRAINT "Content_channelId_fkey" FOREIGN KEY ("channelId") REFERENCES "Channel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
