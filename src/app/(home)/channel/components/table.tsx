@@ -1,5 +1,5 @@
 "use client"
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
 MRT_GlobalFilterTextField,
   MRT_ShowHideColumnsButton,
@@ -19,6 +19,7 @@ import Action from './action';
 import Pagination from '@/app/(home)/channel/components/pagination';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import Aa from './a';
 export interface Channel {
     id:number,
     name: string;
@@ -45,15 +46,16 @@ export interface Channel {
 
 
 
-export default function App({data,length}:{data:Channel[],length:number}) {
+export default function App({data}:{data:Channel[]}) {
+       
 
-
+   console.log(data,'table data')
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
  
   const  [open,setOpen]=useState(false)
-
+const [s,setS]=useState(true)
   const handleClose = () => setOpen(false);
     const columns = useMemo<MRT_ColumnDef<Channel>[]>(
         () => [
@@ -68,7 +70,7 @@ export default function App({data,length}:{data:Channel[],length:number}) {
             header: 'Status',
             muiTableHeadCellProps: { style: { color: 'green' } }, 
             enableHiding: false, 
-            Cell:({cell})=><Box><SwitchSatus checked={cell.row.original.status} id={cell.row.original.id}/></Box>
+            Cell:({cell})=><Box><SwitchSatus setS={setS} s={s} checked={cell.row.original.status} id={cell.row.original.id}/></Box>
           },
           {
             accessorKey: 'action', 
@@ -85,14 +87,15 @@ export default function App({data,length}:{data:Channel[],length:number}) {
         //     Cell: ({ cell }) => <i>{cell.getValue<number>().toLocaleString()}</i>, //optional custom cell render
         //   },
         ],
-        [],
+      []
       );
 
   const table = useMaterialReactTable({
     columns,
-    data, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data:data.channels,
     initialState: { showGlobalFilter: true,pagination: { pageSize: 5, pageIndex: 1 } },
     manualFiltering: true,
+    enableSorting:false
   
     
     
@@ -109,6 +112,7 @@ export default function App({data,length}:{data:Channel[],length:number}) {
     }
     replace(`${pathname}?${params.toString()}`);
   }, 600);
+  
 
  
   return (
@@ -127,14 +131,14 @@ export default function App({data,length}:{data:Channel[],length:number}) {
        
         })}
       >
-        <MRT_GlobalFilterTextField  table={table}
-        
+        {/* <MRT_GlobalFilterTextField  table={table}
+      
          value={searchParams.get('query')?.toString()}
           onChange={(e) => {
             handleSearch(e.target.value);
-          }}/>
+          }}/> */}
       
-      
+      <Aa  table={table}/>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <MRT_ToggleFiltersButton table={table} />
@@ -157,11 +161,12 @@ export default function App({data,length}:{data:Channel[],length:number}) {
           
         
       </Box>
-      <MRT_TableContainer table={table}  />
+      {/* <MRT_TableContainer table={table}  /> */}
+  <a/>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         </Box>
-       <Pagination count={length} />
+       <Pagination count={data.count} />
       </Box>
 
     </Box>

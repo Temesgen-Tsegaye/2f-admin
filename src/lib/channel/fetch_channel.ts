@@ -7,7 +7,7 @@ let channels
 let count
 
 const offset = (currentPage - 1) * 5   //5 page size
-
+console.log(offset,'off')
 if(!query){
 //pure pagination
  channels = await prisma.channel.findMany({
