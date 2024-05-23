@@ -4,7 +4,6 @@ import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import { VictoryPie, VictoryLabel } from "victory";
 import { Prisma } from "@prisma/client";
-import { Box2 } from "three/src/Three.js";
 
 
 
