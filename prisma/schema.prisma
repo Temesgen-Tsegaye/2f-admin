@@ -13,6 +13,8 @@ model User {
   phonenumber String       @unique()
   type        String       @default("normal")
   password    String
+  name        String       @default("User")
+  email       String       @default("someemail")
   favorites   Favorite[]
   watchLaters WatchLater[]
 }
