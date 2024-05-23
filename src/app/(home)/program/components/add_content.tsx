@@ -10,12 +10,16 @@ import { toast } from "react-toastify";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import {Channel} from "@/app/(home)/channel/components/Container"
+
 export default function AddContent({
   open,
   handelClose,
+  channel
 }: {
   open: boolean;
   handelClose: () => void;
+  channel:Channel[]
 }) {
   const [content, setContent] = React.useState({
     videoUrl: "",
@@ -39,19 +43,20 @@ export default function AddContent({
       >
         <Box
           sx={{
-            width: "30vw",
-            height: "45vh",
+            width: "40vw",
+            
             bgcolor: "white",
             borderRadius: "10px",
             display: "flex",
             flexDirection: "column",
 
             alignItems: "center",
-            padding: "2rem",
-            gap: "3rem",
+            paddingX: "2rem",
+            paddingY:"1rem",
+            gap: "1rem",
           }}
         >
-          <Typography variant="h5">Add Content</Typography>
+          <Typography sx={{fontWeight:700,fontSize:"1.5rem"}}>Add Content</Typography>
 
           <Box
             sx={{
@@ -61,8 +66,8 @@ export default function AddContent({
               gap: "1rem",
             }}
           >
-            <Box>
-              <Box>
+            <Box sx={{display:'flex',justifyContent:'space-between'}}>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="video">Video Url</label>
                 <TextField
                   id="video"
@@ -76,14 +81,15 @@ export default function AddContent({
                   variant="filled"
                   inputProps={{
                     style: {
-                      height: "0.5rem",
+                      height: "0.8rem",
+                      padding:"6px"
                     },
                   }}
                 />
               </Box>
              
 
-              <Box>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="title">Title</label>
                 <TextField
                   id="title"
@@ -97,14 +103,15 @@ export default function AddContent({
                   variant="filled"
                   inputProps={{
                     style: {
-                      height: "0.5rem",
+                      height: "0.8rem",
+                      padding:"6px"
                     },
                   }}
                 />
               </Box>
             </Box>
-            <Box>
-              <Box>
+            <Box sx={{display:'flex',justifyContent:'space-between'}}>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="descrition">Description</label>
                 <TextField
                   id="descrition"
@@ -118,14 +125,15 @@ export default function AddContent({
                   variant="filled"
                   inputProps={{
                     style: {
-                      height: "0.5rem",
+                      height: "0.8rem",
+                      padding:"6px"
                     },
                   }}
                 />
               </Box>
              
 
-              <Box>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="imgUrl">Cover Image Url</label>
                 <TextField
                   id="imgUrl"
@@ -139,14 +147,15 @@ export default function AddContent({
                   variant="filled"
                   inputProps={{
                     style: {
-                      height: "0.5rem",
+                      height: "0.8rem",
+                      padding:"6px"
                     },
                   }}
                 />
               </Box>
             </Box>
-            <Box>
-              <Box>
+            <Box sx={{display:'flex',justifyContent:'space-between'}}>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="duration">Duration</label>
                 <TextField
                   id="duration"
@@ -160,19 +169,21 @@ export default function AddContent({
                   variant="filled"
                   inputProps={{
                     style: {
-                      height: "0.5rem",
+                      height: "0.8rem",
+                      padding:"6px"
                     },
                   }}
                 />
               </Box>
 
-              <Box>
-                <label htmlFor="category">Category</label>
+              <Box sx={{width:"40%"}}>
+                <label htmlFor="category" className="block">Category</label>
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="category"
                   name="categoryId"
                   value={content.categoryId}
+                  sx={{height:"30%",width:"100%"}}
                   onChange={(e) =>
                     setContent({ ...content, [e.target.name]: e.target.value })
                   }
@@ -188,36 +199,37 @@ export default function AddContent({
                 </Select>
               </Box>
             </Box>
-            <Box>
-              <Box>
+            <Box sx={{display:'flex',justifyContent:'space-between'}}>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="channel">Channel</label>
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="channel"
                   name="channelId"
+                  sx={{height:"30%",width:"100%"}}
                   value={content.channelId}
                   onChange={(e) =>
                     setContent({ ...content, [e.target.name]: e.target.value })
                   }
                 >
+
+                  
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={1}>Recomended</MenuItem>
-                  <MenuItem value={2}>Popular</MenuItem>
-                  <MenuItem value={3}>Featured</MenuItem>
-                  {/* <MenuItem value={3}>Favorite</MenuItem>
-          <MenuItem value={3}>Watch later</MenuItem> */}
+                   {channel.map((item)=><MenuItem key={item.name} value={item.id}>{item.name}</MenuItem>)}
+             
                 </Select>
               </Box>
 
-              <Box>
+              <Box sx={{width:"40%"}}>
                 <label htmlFor="type">Type</label>
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="type"
                   name="typeId"
                   value={content.typeId}
+                  sx={{height:"30%",width:"100%"}}
                   onChange={(e) =>
                     setContent({ ...content, [e.target.name]: e.target.value })
                   }

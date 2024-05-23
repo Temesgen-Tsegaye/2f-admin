@@ -48,7 +48,7 @@ export async function createContent(content:{
           const created=await prisma.content.create({
              data:{
                 title:content.title,
-                duration: content.duration,
+                duration: Number(content.duration),
                 categoryId:content.categoryId,
                 channelId:content.channelId,
                 typeId:content.typeId,

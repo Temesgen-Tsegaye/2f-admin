@@ -12,6 +12,7 @@ import { DataTable } from "./table";
 import Search from "./search";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import {Channel} from "@/app/(home)/channel/components/Container"
 export interface Content {
   id: number;
   title: string;
@@ -28,9 +29,11 @@ export interface Content {
 export default function Container({
   content,
   count,
+  channel
 }: {
   content: Content[];
   count: number | undefined;
+  channel:Channel[]
 }) {
  
 
@@ -101,7 +104,7 @@ export default function Container({
           Add Content
         </Button>
       </Box>
-      <AddContent open={open} handelClose={handleClose} />
+      <AddContent channel={channel} open={open} handelClose={handleClose} />
 
       <DataTable data={content} columns={columns} />
 
