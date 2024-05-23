@@ -19,6 +19,7 @@ CREATE TABLE "Content" (
     "categoryId" INTEGER NOT NULL,
     "videoUrl" TEXT NOT NULL,
     "coverImageUrl" TEXT NOT NULL,
+    "status" BOOLEAN NOT NULL,
 
     CONSTRAINT "Content_pkey" PRIMARY KEY ("id")
 );
