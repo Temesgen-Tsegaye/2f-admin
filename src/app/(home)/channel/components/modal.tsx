@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import { updateName } from "@/lib/channel/server_actions";
+import { toast } from "react-toastify";
 export default function EditModal({
   open,
   handelClose,
@@ -60,7 +61,7 @@ export default function EditModal({
           <Button
             variant="contained"
             sx={{ bgcolor: "#181A41",width:"100%"}}
-            onClick={() => updateName(id, newName)}
+            onClick={() => updateName(id, newName).then(()=>toast.success("Updated!")).catch(()=>toast.error("Error!"))}
           >
             Update
           </Button>

@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import { updateName } from "@/lib/channel/server_actions";
 import { createChannel } from "@/lib/channel/server_actions";
+import { toast } from "react-toastify";
 export default function AddChannel({
   open,
   handelClose,
@@ -20,6 +21,7 @@ export default function AddChannel({
 
   return (
     <div>
+    
       <Modal
         open={open}
         onClose={handelClose}
@@ -72,7 +74,7 @@ export default function AddChannel({
           <Button
             variant="contained"
             sx={{ bgcolor: "#181A41",width:"30%"}}
-            onClick={() =>createChannel(name)}
+            onClick={() =>createChannel(name).then(()=>toast.success("Added")).catch(()=>toast.error("error"))}
           >
             Add
           </Button>

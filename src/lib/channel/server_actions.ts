@@ -13,7 +13,7 @@ export async function toggleStatus(id:number,status:boolean){
         },
       });
 
-    // await  revalidatePath('/channel?page=2');
+    await  revalidatePath('/channel?page=2');
 }
 
 export async function updateName(id:number,name:string){
@@ -26,8 +26,8 @@ export async function updateName(id:number,name:string){
           name:name,
         },
       });
-
-      // revalidatePath('/channel');
+       
+      revalidatePath('/channel');
 
 }
 
@@ -42,7 +42,7 @@ export async function createChannel(name:string){
 
         console.log(created,'cre')
 
-          // revalidatePath('/channel')
+          revalidatePath('/channel')
 
 
 }
@@ -56,5 +56,6 @@ export async function deleteChannel (id:number){
         },
       })
 
-      // revalidatePath('/channel')
+
+      revalidatePath('/channel')
 }

@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
-import App from "./components/table";
-import { Channel } from "./components/table";
+import Container from "@/app/(home)/channel/components/Container";
+import { Channel } from "./components/Container";
 import { fetchChannels } from "@/lib/channel/fetch_channel";
 import { Loading } from "@/component/global/table_loading";
-
+import { Box } from "@mui/material";
 
 export default async function Page({
   searchParams,
@@ -16,14 +16,13 @@ export default async function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const data= await fetchChannels(query,currentPage);
-  console.log(data,'ddd')
   
   
   return (
-    <div>
-      <Suspense key={query+currentPage}   fallback={<Loading />}>
-        <App  data={data}   />
+    <Box sx={{padding:'1rem',height:'100%'}} >
+      <Suspense key={query+currentPage}   fallback={<h1>Loading ....</h1>}>
+        <Container  channels={data.channels} count={data.count}   />
       </Suspense>
-    </div>
+    </Box >
   );
 }

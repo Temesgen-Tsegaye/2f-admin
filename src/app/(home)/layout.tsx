@@ -7,6 +7,8 @@ import { MdDashboard } from "react-icons/md";
 import Header from "@/component/global/header";
 import SideNav from "@/component/global/side_nav";
 import { Box } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,6 +25,8 @@ export default async  function RootLayout({
     <html lang="en">
        <Box component="body" sx={{display:'flex'}}>
          <SideNav/>
+         <ToastContainer/>
+
          <Box sx={{display:'flex',flexDirection:'column',flex:1}}>
          <Header/>
         {children}

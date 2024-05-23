@@ -1,174 +1,73 @@
 "use client"
-import { useEffect, useMemo, useState } from 'react';
+
+import React from 'react';
 import {
-MRT_GlobalFilterTextField,
-  MRT_ShowHideColumnsButton,
-  MRT_TablePagination,
-  MRT_ToggleDensePaddingButton,
-  MRT_ToggleFiltersButton,
-  MRT_ToolbarAlertBanner,
-  useMaterialReactTable,
-  type MRT_ColumnDef,
-  MRT_TableContainer,
-} from 'material-react-table';
-import { IconButton, Box, Button, Typography, Tooltip } from '@mui/material';
-import PrintIcon from '@mui/icons-material/Print';
-import AddChannel from './add_channel';
-import SwitchSatus from './switch';
-import Action from './action';
-import Pagination from '@/app/(home)/channel/components/pagination';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce';
-import Aa from './a';
-export interface Channel {
-    id:number,
-    name: string;
-    status:boolean
-  }
-  const data: Channel[] = [
-  {
-    id:1,
-    name:"HBO",
-    status:true
-  },
-  {
-    id:1,
-    name:"HBO",
-    status:true
-  },
-  {
-    id:1,
-    name:"HBO",
-    status:true
-  }
-  ];
-  
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
-
-
-export default function App({data}:{data:Channel[]}) {
-       
-
-   console.log(data,'table data')
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
- 
-  const  [open,setOpen]=useState(false)
-const [s,setS]=useState(true)
-  const handleClose = () => setOpen(false);
-    const columns = useMemo<MRT_ColumnDef<Channel>[]>(
-        () => [
-          {
-            accessorKey: 'name', //simple recommended way to define a column
-            header: 'Name',
-            muiTableHeadCellProps: { style: { color: 'green' } }, //custom props
-            enableHiding: false, //disable a feature for this column
-          },
-          {
-            accessorKey: 'status', 
-            header: 'Status',
-            muiTableHeadCellProps: { style: { color: 'green' } }, 
-            enableHiding: false, 
-            Cell:({cell})=><Box><SwitchSatus setS={setS} s={s} checked={cell.row.original.status} id={cell.row.original.id}/></Box>
-          },
-          {
-            accessorKey: 'action', 
-            header: 'Action',
-            muiTableHeadCellProps: { style: { color: 'green' } }, 
-            enableHiding: false, 
-            Cell:({cell})=> <Action id={cell.row.original.id} name={cell.row.original.name} status={cell.row.original.status} />
-          },
-        //   {
-        //     accessorFn: (originalRow) => parseInt(originalRow.age), //alternate way
-        //     id: 'age', //id required if you use accessorFn instead of accessorKey
-        //     header: 'Age',
-        //     Header: <i style={{ color: 'red' }}>Age</i>, //optional custom markup
-        //     Cell: ({ cell }) => <i>{cell.getValue<number>().toLocaleString()}</i>, //optional custom cell render
-        //   },
-        ],
-      []
-      );
-
-  const table = useMaterialReactTable({
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+}
+const cellStyle = { padding: '10px 10px' }; // Adjust padding to decrease row height
+const rowStyle = { height: '25px' }
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const table = useReactTable({
+    data,
     columns,
-    data:data.channels,
-    initialState: { showGlobalFilter: true,pagination: { pageSize: 5, pageIndex: 1 } },
-    manualFiltering: true,
-    enableSorting:false
-  
-    
-    
-  });
-  const handleSearch = useDebouncedCallback((term) => {
-    console.log(`Searching... ${term}`);
-   
-    const params = new URLSearchParams(searchParams);
-      params.set('page', '1');
-    if (term) {
-      params.set('query', term);
-    } else {
-      params.delete('query');
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, 600);
-  
+    getCoreRowModel: getCoreRowModel(),
+  })
 
- 
   return (
-
-    <Box sx={{ border: '', padding: '16px' }}>
-
-      <AddChannel  open={open} handelClose={handleClose} />
-          <Box
-        sx={(theme) => ({
-          display: 'flex',
-          backgroundColor: 'inherit',
-          borderRadius: '4px',
-          gap: '16px',
-          justifyContent: 'space-between',
-          padding: '24px 16px',
-       
-        })}
-      >
-        {/* <MRT_GlobalFilterTextField  table={table}
-      
-         value={searchParams.get('query')?.toString()}
-          onChange={(e) => {
-            handleSearch(e.target.value);
-          }}/> */}
-      
-      <Aa  table={table}/>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <MRT_ToggleFiltersButton table={table} />
-          <Tooltip title="Print">
-            <IconButton onClick={() => window.print()}>
-              <PrintIcon />
-            </IconButton>
-          </Tooltip>
-          <Box>
-          <Button
-            sx={{bgcolor:"#181A41"}}
-            variant="contained"
-            onClick={()=>setOpen(true)}
-          >
-            Add Channel
-          </Button>
-        </Box>
-        </Box>
-
-          
-        
-      </Box>
-      {/* <MRT_TableContainer table={table}  /> */}
-  <a/>
-      <Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        </Box>
-       <Pagination count={data.count} />
-      </Box>
-
-    </Box>
+    <TableContainer   sx={{padding:0,margin:0,height:"75%"}}>
+      <Table>
+        <TableHead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}  sx={rowStyle}>
+              {headerGroup.headers.map((header) => (
+                <TableCell key={header.id} sx={cellStyle}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHead>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                selected={row.getIsSelected()}
+                sx={rowStyle}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} sx={cellStyle}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} align="center">
+                <Typography variant="body2">No results.</Typography>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
