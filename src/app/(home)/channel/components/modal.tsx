@@ -19,6 +19,7 @@ export default function EditModal({
   handelClose: () => void;
 }) {
   const [newName, setName] = React.useState("");
+  
 
   return (
     <div>

@@ -8,6 +8,7 @@ import Header from "@/component/global/header";
 import SideNav from "@/component/global/side_nav";
 import { Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
+import { SessionProvider } from 'next-auth/react';
 import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -21,9 +22,12 @@ export default async  function RootLayout({
   children: React.ReactNode;
 }>) {
    const session=await auth()
+   console.log(session)
   return (
     <html lang="en">
-       <Box component="body" sx={{display:'flex'}}>
+
+      <SessionProvider session={session}>
+      <Box component="body" sx={{display:'flex'}}>
          <SideNav/>
          <ToastContainer/>
 
@@ -33,6 +37,9 @@ export default async  function RootLayout({
          </Box>
 
         </Box>
+
+      </SessionProvider>
+      
     </html>
   );
 }

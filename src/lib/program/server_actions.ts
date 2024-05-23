@@ -17,7 +17,7 @@ export async function toggleStatus(id:number,status:boolean){
     await  revalidatePath('/channel');
 }
 
-export async function updateContent(id:number,name:string,description:string){
+export async function updateContent(id:number,title:string,description:string){
       
     const updatedChannel = await prisma.content.update({
         where: {
@@ -45,6 +45,8 @@ export async function createContent(content:{
     typeId: number;
 }){
 
+  console.log(content,'con')
+
           const created=await prisma.content.create({
              data:{
                 title:content.title,
@@ -55,7 +57,9 @@ export async function createContent(content:{
                 description:content.description,
                 coverImageUrl:content.coverImage,
                 videoUrl:content.videoUrl,
-                status:true
+                status:true,
+                
+
 
 
              }  

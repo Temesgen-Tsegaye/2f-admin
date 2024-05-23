@@ -1,3 +1,4 @@
+
 import { prisma } from "@/config/prisma-client";
 
 export async function fetchChannels(query:string,currentPage:number=1){

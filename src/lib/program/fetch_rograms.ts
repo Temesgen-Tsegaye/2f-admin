@@ -1,3 +1,4 @@
+
 import { prisma } from "@/config/prisma-client";
 export async function fetchPrograms(query:string,currentPage:number=1){
 
