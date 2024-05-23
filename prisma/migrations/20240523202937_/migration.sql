@@ -2,8 +2,10 @@
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "phonenumber" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" TEXT NOT NULL DEFAULT 'normal',
     "password" TEXT NOT NULL,
+    "name" TEXT NOT NULL DEFAULT 'User',
+    "email" TEXT NOT NULL DEFAULT 'someemail',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
