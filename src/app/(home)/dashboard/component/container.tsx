@@ -25,7 +25,7 @@ export default function Container({counts,pie,progCount}:{progCount:number, coun
         {name:"Program",count:counts.programCount},
         {name:"Channel",count:counts.channelCount},
 
-     ].map((item)=><Card name={item.name} count={item.count}/>)}
+     ].map((item)=><Card key={item.name} name={item.name} count={item.count}/>)}
 </Box>
 <PiChart pie={pie}/>
 <LineChart count={progCount}/>
