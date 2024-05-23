@@ -4,7 +4,6 @@ import { Channel } from "./components/Container";
 import { fetchChannels } from "@/lib/channel/fetch_channel";
 import { Loading } from "@/component/global/table_loading";
 import { Box } from "@mui/material";
-
 export default async function Page({
   searchParams,
 }: {
@@ -20,7 +19,7 @@ export default async function Page({
   
   return (
     <Box sx={{padding:'1rem',height:'100%'}} >
-      <Suspense key={query+currentPage}   fallback={<h1>Loading ....</h1>}>
+      <Suspense key={query+currentPage}   fallback={<Loading/>}>
         <Container  channels={data.channels} count={data.count}   />
       </Suspense>
     </Box >
