@@ -8,7 +8,7 @@ import Header from "@/component/global/header";
 import SideNav from "@/component/global/side_nav";
 import { Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
-import { SessionProvider } from 'next-auth/react';
+import SessionProvider  from '@/context/session_context';
 import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {

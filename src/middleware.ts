@@ -7,7 +7,7 @@ export const config = {
 
 export default auth((req) => {
   const reqUrl = new URL(req.url);
-  if (!req.auth) {
+  if (!req.auth || req.auth.user?.role!='normal') {
     return NextResponse.redirect(
       new URL(
         `${BASE_PATH}/signin?callbackUrl=${encodeURIComponent(

@@ -8,24 +8,41 @@ const authOptions: NextAuthConfig = {
     Credentials({
       name: "Credentials",
       credentials: {
-        phoneNumber: { label: "phoneNumber", type: "text", placeholder: "jsmith" },
+        phoneNumber: { label: "Phone Number", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials): Promise<any> {
-        
+        const user = await prisma.user.findUnique({
+          where: {
+            phonenumber: credentials.phoneNumber as string,
+          },
+        });
+      if(user?.phonenumber!=credentials.phoneNumber){
+        return null
+      }
 
-        const user=await prisma.user.findUnique({
-          where:{
-            phonenumber:credentials.phoneNumber as string
-          }
-        })
-       
         return user
-          ? { id: user.id, name: user.name, email:user.email,role:user.type  }
+          ? { id: user.id, name: user.name, email: user.email, role: user.type }
           : null;
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token, user }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+  },
   basePath: BASE_PATH,
   secret: process.env.NEXTAUTH_SECRET,
 };
