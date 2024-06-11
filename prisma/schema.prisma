@@ -44,6 +44,8 @@ model Channel {
   status   Boolean   @default(true)
   type     String
   country  String
+  fans     Int
+  date     DateTime
   contents Content[]
 }
 

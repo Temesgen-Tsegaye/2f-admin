@@ -22,6 +22,7 @@ type Channel = {
   name: string;
   status: boolean;
   type:string
+  date:object
  
 };
 
@@ -31,11 +32,14 @@ const mapper={
   name:'text',
   status:'text',
   type:'select',
-  country:'multiSelect'
+  country:'multiSelect',
+  fans:'range',
+  date:'date'
 }
 
-const ChannelTable=({data}:{data:{id:number,name:string,status:boolean,type:string}[]}) => {
-          const searchParams=useSearchParams()
+const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,type:string}[],count:number}) => {
+  
+  const searchParams=useSearchParams()
     const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: Number(searchParams.get('page'))||0,
     pageSize: 5,
@@ -73,6 +77,17 @@ const ChannelTable=({data}:{data:{id:number,name:string,status:boolean,type:stri
         filterVariant:'multi-select',
         filterSelectOptions:['UK','USA','Mexico','France'],
       },
+      {
+        accessorKey: 'fans',
+        header: 'No of Fans',
+        filterVariant:'range',
+      },
+      {
+        accessorKey: 'date',
+        header: 'Date',
+        filterVariant:'date',
+        Cell: ({ row }) => new Date(row.original.date).toLocaleDateString()
+      },
      
 
     ],
@@ -86,12 +101,13 @@ const ChannelTable=({data}:{data:{id:number,name:string,status:boolean,type:stri
     manualPagination: true,
     enableColumnFilterModes: true,
     manualFiltering: true,
-    initialState: { showColumnFilters: true },
+    initialState: { showColumnFilters: true, },
     onColumnFilterFnsChange:setColumnsFilterMode,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange:setPagination,
-    rowCount:30,
+    rowCount:count,
     state: {
+      
       pagination,
       columnFilters,
       columnFilterFns,      

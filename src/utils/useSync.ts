@@ -22,7 +22,13 @@ export default function useSync(pagination:PaginationState,columnFilters:any) {
         params.set('page', pagination.pageIndex.toString());
       
         for(let item of columnFilters){
-          if(typeof item.value=='string'){
+
+            console.log(item.value.$d)
+             if(item.filterValue=='date'){
+                params.set(`${item.id}`,`${item.value.$d}@@@@${item.filterValue}@@@@${item.filterMode}`)
+
+
+             }  else if(typeof item.value=='string'){
 
               params.set(`${item.id}`,`${item.value}@@@@${item.filterValue}@@@@${item.filterMode}`)
           }else{

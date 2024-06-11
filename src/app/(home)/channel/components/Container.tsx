@@ -9,6 +9,8 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import  DataTable  from "./table";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 export interface Channel {
   id: number;
   name: string;
@@ -74,8 +76,9 @@ export default function Container({
         },}} onClick={()=>setOpen(true)}>Add Channel</Button>
       </Box>
         <AddChannel open={open} handelClose={handleClose} />
-
-      <DataTable data={channels} columns={columns} />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DataTable data={channels} count={count} columns={columns} />
+          </LocalizationProvider>
 
       <Box sx={{display:'flex',justifyContent:'center',marginTop:'2rem'}}>
       </Box>
