@@ -114,7 +114,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
     },
   });
 
-  return <MaterialReactTable table={table} />;
+  return <MaterialReactTable  table={table} />;
 };
 
 export default ChannelTable;

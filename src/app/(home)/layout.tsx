@@ -31,7 +31,7 @@ export default async  function RootLayout({
          <SideNav/>
          <ToastContainer/>
 
-         <Box sx={{display:'flex',flexDirection:'column',flex:1}}>
+         <Box sx={{display:'flex',flexDirection:'column',width:'80vw'}}>
          <Header/>
         {children}
          </Box>

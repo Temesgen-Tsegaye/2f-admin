@@ -8,7 +8,7 @@ import { MdDashboard } from "react-icons/md";
 export default function SideNav() {
        const [selected,setSeected]=useState("dashboard")
   return (
-    <Paper elevation={3}  sx={{width:'15%',display:'flex',flexDirection:'column',gap:'1rem',height:'100vh'}} >
+    <Paper elevation={3}  sx={{width:'20vw',display:'flex',flexDirection:'column',gap:'1rem',height:'100vh'}} >
       <Paper elevation={3} sx={{display:'flex', gap:"1rem",alignItems:'center',paddingX:'2rem', paddingY:"0.5rem",alignSelf:'baseline',width:'100%'}}> <Image width={50} height={50}  style={{height:''}} alt='aa' src='/maple.svg'/>
       <Typography sx={{fontWeight:'bold'}}>T-movie</Typography></Paper>
 

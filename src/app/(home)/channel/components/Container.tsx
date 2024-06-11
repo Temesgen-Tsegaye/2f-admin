@@ -60,7 +60,7 @@ export default function Container({
   ];
 
   return (
-    <Paper sx={{ height: "100%",padding:'2rem',width:'100%', }}  elevation={3}>
+    <Paper sx={{padding:'1rem',width:'100%', }}  elevation={3}>
       <Box
         sx={{
 
