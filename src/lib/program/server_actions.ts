@@ -45,7 +45,6 @@ export async function createContent(content:{
     typeId: number;
 }){
 
-  console.log(content,'con')
 
           const created=await prisma.content.create({
              data:{
@@ -66,7 +65,6 @@ export async function createContent(content:{
         }
           )
 
-        console.log(created,'cre')
 
           revalidatePath('/channel')
 

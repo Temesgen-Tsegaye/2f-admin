@@ -16,12 +16,11 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const data= await fetchPrograms(query,currentPage);
   const channelData=await fetchChannels("",1)
-  console.log(data,'data')
   
   return (
     <Box sx={{padding:'1rem',height:'100%'}} >
       <Suspense key={query+currentPage}   fallback={<Loading/>}>
-        <Container channel={channelData.channels} content={data.content} count={data.count}   />
+        {/* <Container channel={channelData.channels} content={data.content} count={data.count}   /> */}
       </Suspense>
     </Box >
   );

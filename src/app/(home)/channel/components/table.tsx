@@ -1,73 +1,104 @@
 "use client"
-
-import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_ColumnFiltersState,
+  type MRT_PaginationState,
+  type MRT_SortingState,
+} from 'material-react-table';
+import useSync from '@/utils/useSync';
+import { useSearchParams } from 'next/navigation';
+type UserApiResponse = {
+  data: Array<Channel>;
+  
+    totalRowCount: number;
+  };
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+
+type Channel = {
+ id:number
+  name: string;
+  status: boolean;
+  type:string
+ 
+};
+
+  
+
+const mapper={
+  name:'text',
+  status:'text',
+  type:'select',
+  country:'multiSelect'
 }
-const cellStyle = { padding: '10px 10px' }; // Adjust padding to decrease row height
-const rowStyle = { height: '25px' }
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
+
+const ChannelTable=({data}:{data:{id:number,name:string,status:boolean,type:string}[]}) => {
+          const searchParams=useSearchParams()
+    const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: Number(searchParams.get('page'))||0,
+    pageSize: 5,
+  });
+
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnFilterFns, setColumnsFilterMode] = useState({})
+    console.log(columnFilters,'fil')
+  // useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})));
+  useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})));
+  // useSync(pagination,columnFilters)
+  const columns = useMemo<MRT_ColumnDef<Channel>[]>(
+    () => [
+
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        filterVariant:'text'
+      },
+
+      {
+        accessorKey:'status',
+        header: 'Status',
+        filterVariant:'text'
+      },
+      {
+        accessorKey: 'type',
+        header: 'Type',
+        filterVariant:'select',
+        filterSelectOptions:['A','B','C','D'],
+      },
+      {
+        accessorKey: 'country',
+        header: 'Type',
+        filterVariant:'multi-select',
+        filterSelectOptions:['UK','USA','Mexico','France'],
+      },
+     
+
+    ],
+    [],
+  );
+  
+    
+  const table = useMaterialReactTable({
     columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
+    data,
+    manualPagination: true,
+    enableColumnFilterModes: true,
+    manualFiltering: true,
+    initialState: { showColumnFilters: true },
+    onColumnFilterFnsChange:setColumnsFilterMode,
+    onColumnFiltersChange: setColumnFilters,
+    onPaginationChange:setPagination,
+    rowCount:30,
+    state: {
+      pagination,
+      columnFilters,
+      columnFilterFns,      
+    },
+  });
 
-  return (
-    <TableContainer   sx={{padding:0,margin:0,height:"75%"}}>
-      <Table>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}  sx={rowStyle}>
-              {headerGroup.headers.map((header) => (
-                <TableCell key={header.id} sx={cellStyle}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                selected={row.getIsSelected()}
-                sx={rowStyle}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} sx={cellStyle}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} align="center">
-                <Typography variant="body2">No results.</Typography>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
-}
+  return <MaterialReactTable table={table} />;
+};
+
+export default ChannelTable;

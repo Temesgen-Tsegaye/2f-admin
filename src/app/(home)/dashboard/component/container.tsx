@@ -16,7 +16,6 @@ export default function Container({counts,pie,progCount}:{progCount:number, coun
 
 {
 
-    console.log(pie,'pie')
   return (
     <Paper sx={{height:"300vh",padding:"3rem",display:'flex',flexDirection:"column",gap:'3rem'}} elevation={3}>
 <Box sx={{display:"flex",justifyContent:'space-between'}}>

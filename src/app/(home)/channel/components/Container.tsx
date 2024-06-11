@@ -1,16 +1,12 @@
 "use client";
 import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Box } from "@mui/material";
-
 import AddChannel from "./add_channel";
 import SwitchSatus from "./switch";
 import Action from "./action";
-import Pagination from "@/app/(home)/channel/components/pagination";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { DataTable } from "./table";
-import Search from "./search";
+import  DataTable  from "./table";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 export interface Channel {
@@ -73,7 +69,6 @@ export default function Container({
       
         }}
       >
-        <Search />
          <Button sx={{bgcolor:"#000222",color:"white", ':hover': {
           backgroundColor: '#000222', 
         },}} onClick={()=>setOpen(true)}>Add Channel</Button>
@@ -83,7 +78,6 @@ export default function Container({
       <DataTable data={channels} columns={columns} />
 
       <Box sx={{display:'flex',justifyContent:'center',marginTop:'2rem'}}>
-        <Pagination count={count || 0} />
       </Box>
     </Paper>
   );

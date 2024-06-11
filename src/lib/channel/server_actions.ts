@@ -40,7 +40,6 @@ export async function createChannel(name:string){
         }
           )
 
-        console.log(created,'cre')
 
           revalidatePath('/channel')
 
