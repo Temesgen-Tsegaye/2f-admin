@@ -32,7 +32,7 @@ export default function useSync(
             
           });
         params.set('globalFilter',globalFilter)
-        params.set('page','0')
+        params.set('page',JSON.stringify(pagination))
         router.push(`${pathName}?${params.toString()}`);
 
       return
