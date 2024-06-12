@@ -16,7 +16,7 @@ export default async function Page({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const pageSize = Number(searchParams?.pageSize) || 5;
-  const data= await fetchChannels(searchParams,currentPage,pageSize);
+  const data= await fetchChannels(searchParams,searchParams?.page)
   
   
   return (

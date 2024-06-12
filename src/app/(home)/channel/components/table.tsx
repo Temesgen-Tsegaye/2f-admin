@@ -60,7 +60,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
         header: 'Name',
         filterVariant:'text',
         filterFn:'contains',    
-        columnFilterModeOptions:["contains"]
+   
       },
 
       {
@@ -78,27 +78,27 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
         header: 'Type',
         filterVariant:'select',
         filterSelectOptions:['A','B','C','D'],
-        filterFn:'contains'
+       
       },
       {
         accessorKey: 'country',
         header: 'Type',
         filterVariant:'multi-select',
         filterSelectOptions:['UK','USA','Mexico','France'],
-        filterFn:'contains'
+    
       },
       {
         accessorKey: 'fans',
         header: 'No of Fans',
         filterVariant:'range',
-        filterFn:'greaterThan'
+    
       },
       {
         accessorKey: 'date',
         header: 'Date',
         filterVariant:'date',
         Cell: ({ row }) => new Date(row.original.date).toLocaleDateString(),
-        filterFn:'greaterThan'
+       
       },
      
 

@@ -20,8 +20,7 @@ export default function useSync(
       }
     });
 
-    params.set("page", pagination.pageIndex.toString());
-    params.set("pageSize", pagination.pageSize.toString());
+    params.set("page",JSON.stringify(pagination));
     if(!globalFilter){
         params.delete('globalFilter')
     }

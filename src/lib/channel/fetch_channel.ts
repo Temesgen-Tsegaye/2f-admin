@@ -1,7 +1,15 @@
 import { prisma } from "@/config/prisma-client";
 import { channel } from "diagnostics_channel";
 
-export async function fetchChannels(search: object, currentPage: number = 1,pageSize:number) {
+export async function fetchChannels(search: object, page:any) {
+
+       
+
+     if(page){
+      console.log(JSON.parse(page),'pagepage')
+     }
+  
+             
   if (search.globalFilter) {
     const query = globalFilterQueryBuilder(search.globalFilter, [
       "name",
@@ -22,7 +30,6 @@ export async function fetchChannels(search: object, currentPage: number = 1,page
   }
 
   let query = {};
-  console.log(search, "ser");
   for (let items in search) {
     const subQuery = columnQueryBuilder(items, search[items]);
     query = {
@@ -30,11 +37,10 @@ export async function fetchChannels(search: object, currentPage: number = 1,page
       ...subQuery,
     };
   }
-  console.log(query);
   const contents = await prisma.channel.findMany({
     where: query,
-    skip: currentPage * 5,
-    take: pageSize,
+    skip: page ?JSON.parse(page).pageIndex * 5:0,
+    take: page? JSON.parse(page).pageSize:5,
   });
 
   return {
@@ -45,7 +51,6 @@ export async function fetchChannels(search: object, currentPage: number = 1,page
 
 function columnQueryBuilder(search: string, value: string) {
   let splitted = value.split("@@@@");
-  console.log(splitted[1]);
   if (splitted[1] === "text" || splitted[1] === "select") {
     if (splitted[2] === "contains") {
       return { [search]: { contains: splitted[0] } };
@@ -167,7 +172,6 @@ function columnQueryBuilder(search: string, value: string) {
     } else if (splitted[2] === "endsWith") {
       return { [search]: { endsWith: splitted[0] } };
     } else if (splitted[2] == "equals") {
-      console.log(new Date(splitted[0]), "gerg");
       return { [search]: { equals: new Date(splitted[0]) } };
     } else if (splitted[2] == "notEquals") {
       return { [search]: { not: new Date(splitted[0]) } };
