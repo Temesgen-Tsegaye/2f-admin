@@ -30,7 +30,7 @@ type Channel = {
 
 const mapper={
   name:'text',
-  status:'text',
+  status:'checkbox',
   type:'select',
   country:'multiSelect',
   fans:'range',
@@ -39,6 +39,7 @@ const mapper={
 
 const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,type:string}[],count:number}) => {
   
+     console.log(data,'data')  
 
   const [globalFilter, setGlobalFilter] = useState('');
   const searchParams=useSearchParams()
@@ -48,6 +49,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
   });
 
   const [columnFilters, setColumnFilters] = useState([]);
+   console.log(columnFilters,'columnFilters')
   const [columnFilterFns, setColumnsFilterMode] = useState({})
   useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})),globalFilter);
   const columns = useMemo<MRT_ColumnDef<Channel>[]>(
@@ -67,8 +69,8 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
         Cell: ({ cell }) => {
           return <div>{cell.getValue()?'true':'false'}</div>;
         },
-        filterFn:'contains',
-        filterVariant:'text'
+      
+        filterVariant:'checkbox'
 
       },
       {
@@ -80,7 +82,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
       },
       {
         accessorKey: 'country',
-        header: 'Type',
+        header: 'Country',
         filterVariant:'multi-select',
         filterSelectOptions:['UK','USA','Mexico','France'],
     

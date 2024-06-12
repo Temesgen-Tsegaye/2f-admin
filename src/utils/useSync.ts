@@ -9,7 +9,7 @@ export default function useSync(
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
-
+  console.log(columnFilters,'columnFilters')
   React.useEffect(() => {
     const params = new URLSearchParams(searchParams);
     const columnFilterIds = columnFilters.map((item) => item.id);

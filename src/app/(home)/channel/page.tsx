@@ -21,9 +21,7 @@ export default async function Page({
   
   return (
     <Box sx={{padding:'1rem',height:'90vh',width:'100%',overflowX:'scroll', overflowY:'scroll'}} >
-      <Suspense key={query+currentPage}   fallback={<Loading/>}>
         <Container  channels={data.channels} count={data.count}   />
-      </Suspense>
     </Box >
   );
 }

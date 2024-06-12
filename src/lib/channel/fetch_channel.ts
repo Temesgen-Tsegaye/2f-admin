@@ -1,4 +1,5 @@
 import { prisma } from "@/config/prisma-client";
+import { equal } from "assert";
 import { channel } from "diagnostics_channel";
 
 export async function fetchChannels(search: object, page:any) {
@@ -6,7 +7,6 @@ export async function fetchChannels(search: object, page:any) {
        
       
      if(page){
-      console.log(JSON.parse(page),'pagepage')
      }
     
              
@@ -51,7 +51,11 @@ export async function fetchChannels(search: object, page:any) {
 
 function columnQueryBuilder(search: string, value: string) {
   let splitted = value.split("@@@@");
-  if (splitted[1] === "text" || splitted[1] === "select") {
+
+  if (splitted[1] === "checkbox") {
+
+    return  { [search]: { equals: splitted[0]==="true"?true:false } };
+  }else if (splitted[1] === "text" || splitted[1] === "select") {
     if(splitted[2] === "fuzzy"){ 
 
   
