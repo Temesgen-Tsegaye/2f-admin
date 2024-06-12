@@ -4,6 +4,7 @@ import { Channel } from "./components/Container";
 import { fetchChannels } from "@/lib/channel/fetch_channel";
 import { Loading } from "@/component/global/table_loading";
 import { Box } from "@mui/material";
+import page from "../dashboard/page";
 export default async function Page({
   searchParams,
 }: {
@@ -14,7 +15,8 @@ export default async function Page({
 }) {
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
-  const data= await fetchChannels(searchParams,currentPage);
+  const pageSize = Number(searchParams?.pageSize) || 5;
+  const data= await fetchChannels(searchParams,currentPage,pageSize);
   
   
   return (

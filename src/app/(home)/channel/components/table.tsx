@@ -39,6 +39,9 @@ const mapper={
 
 const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,type:string}[],count:number}) => {
   
+
+  const [globalFilter, setGlobalFilter] = useState('');
+  console.log(globalFilter,'glob')
   const searchParams=useSearchParams()
     const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: Number(searchParams.get('page'))||0,
@@ -48,16 +51,16 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnFilterFns, setColumnsFilterMode] = useState({})
     console.log(columnFilters,'fil')
-  // useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})));
-  useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})));
-  // useSync(pagination,columnFilters)
+  useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})),globalFilter);
   const columns = useMemo<MRT_ColumnDef<Channel>[]>(
     () => [
-
+     
       {
         accessorKey: 'name',
         header: 'Name',
-        filterVariant:'text'
+        filterVariant:'text',
+        filterFn:'contains',    
+        columnFilterModeOptions:["contains"]
       },
 
       {
@@ -66,31 +69,36 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
         Cell: ({ cell }) => {
           return <div>{cell.getValue()?'true':'false'}</div>;
         },
-    
+        filterFn:'contains',
         filterVariant:'text'
+
       },
       {
         accessorKey: 'type',
         header: 'Type',
         filterVariant:'select',
         filterSelectOptions:['A','B','C','D'],
+        filterFn:'contains'
       },
       {
         accessorKey: 'country',
         header: 'Type',
         filterVariant:'multi-select',
         filterSelectOptions:['UK','USA','Mexico','France'],
+        filterFn:'contains'
       },
       {
         accessorKey: 'fans',
         header: 'No of Fans',
         filterVariant:'range',
+        filterFn:'greaterThan'
       },
       {
         accessorKey: 'date',
         header: 'Date',
         filterVariant:'date',
-        Cell: ({ row }) => new Date(row.original.date).toLocaleDateString()
+        Cell: ({ row }) => new Date(row.original.date).toLocaleDateString(),
+        filterFn:'greaterThan'
       },
      
 
@@ -107,11 +115,12 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
     manualFiltering: true,
     initialState: { showColumnFilters: true, },
     onColumnFilterFnsChange:setColumnsFilterMode,
+    onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange:setPagination,
     rowCount:count,
     state: {
-      
+      globalFilter,
       pagination,
       columnFilters,
       columnFilterFns,      

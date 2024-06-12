@@ -1,45 +1,63 @@
-import React from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { PaginationState } from '@tanstack/table-core';
-export default function useSync(pagination:PaginationState,columnFilters:any) {
+import React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { PaginationState } from "@tanstack/table-core";
+export default function useSync(
+  pagination: PaginationState,
+  columnFilters: any,
+  globalFilter: string
+) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
 
-    const router=useRouter()
-    const searchParams = useSearchParams()
-    const pathName=usePathname()
+  React.useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const columnFilterIds = columnFilters.map((item) => item.id);
+    params.forEach((value, key) => {
+      if (!columnFilterIds.includes(key)) {
+        params.delete(key);
+        router.replace(`${pathName}?${params.toString()}`);
+      }
+    });
 
-    React.useEffect(() => {
-        const params = new URLSearchParams(searchParams);
-        const columnFilterIds = columnFilters.map((item) => item.id);
+    params.set("page", pagination.pageIndex.toString());
+    params.set("pageSize", pagination.pageSize.toString());
+    if(!globalFilter){
+        params.delete('globalFilter')
+    }
+    if(globalFilter){
         params.forEach((value, key) => {
-            if (!columnFilterIds.includes(key)) {
-                params.delete(key);
-                router.replace(`${pathName}?${params.toString()}`);
+             
+              params.delete(key);
+              router.replace(`${pathName}?${params.toString()}`);
+            
+          });
+        params.set('globalFilter',globalFilter)
+        params.set('page','0')
+        router.push(`${pathName}?${params.toString()}`);
 
-            }
-        });
-       
-    
-        params.set('page', pagination.pageIndex.toString());
-      
-        for(let item of columnFilters){
-
-            console.log(item.value.$d)
-             if(item.filterValue=='date'){
-                params.set(`${item.id}`,`${item.value.$d}@@@@${item.filterValue}@@@@${item.filterMode}`)
-
-
-             }  else if(typeof item.value=='string'){
-
-              params.set(`${item.id}`,`${item.value}@@@@${item.filterValue}@@@@${item.filterMode}`)
-          }else{
-            params.set(`${item.id}`,`${item.value.join(',')}@@@@${item.filterValue}@@@@${item.filterMode}`)
-
-          }
-        //   params.set('page','0')
-      
-        }
-       router.push(`${pathName}?${params.toString()}`);
-  
-      }, [pagination.pageIndex,pagination.pageSize,columnFilters]);
-
+      return
+    }
+    for (let item of columnFilters) {
+      console.log(item.value.$d);
+      if (item.filterValue == "date") {
+        params.set(
+          `${item.id}`,
+          `${item.value.$d}@@@@${item.filterValue}@@@@${item.filterMode}`
+        );
+      } else if (typeof item.value == "string") {
+        params.set(
+          `${item.id}`,
+          `${item.value}@@@@${item.filterValue}@@@@${item.filterMode}`
+        );
+      } else {
+        params.set(
+          `${item.id}`,
+          `${item.value.join(",")}@@@@${item.filterValue}@@@@${item.filterMode}`
+        );
+      }
+      //   params.set('page','0')
+    }
+    router.push(`${pathName}?${params.toString()}`);
+  }, [pagination.pageIndex, pagination.pageSize, columnFilters]);
 }

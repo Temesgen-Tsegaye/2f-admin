@@ -1,11 +1,27 @@
 import { prisma } from "@/config/prisma-client";
 import { channel } from "diagnostics_channel";
 
-export async function fetchChannels(search: object, currentPage: number = 1) {
-  let query = {
-  
+export async function fetchChannels(search: object, currentPage: number = 1,pageSize:number) {
+  if (search.globalFilter) {
+    const query = globalFilterQueryBuilder(search.globalFilter, [
+      "name",
+      "type",
+      "country",
+    ]);
 
-  };
+    const contents = await prisma.channel.findMany({
+      where: query,
+      // skip: currentPage * 5,
+      // take: 5,
+    });
+
+    return {
+      channels: contents,
+      count: await prisma.channel.count({ where: query }),
+    };
+  }
+
+  let query = {};
   console.log(search, "ser");
   for (let items in search) {
     const subQuery = columnQueryBuilder(items, search[items]);
@@ -17,8 +33,8 @@ export async function fetchChannels(search: object, currentPage: number = 1) {
   console.log(query);
   const contents = await prisma.channel.findMany({
     where: query,
-   skip:currentPage*5,
-   take:5
+    skip: currentPage * 5,
+    take: pageSize,
   });
 
   return {
@@ -30,7 +46,7 @@ export async function fetchChannels(search: object, currentPage: number = 1) {
 function columnQueryBuilder(search: string, value: string) {
   let splitted = value.split("@@@@");
   console.log(splitted[1]);
-  if (splitted[1] === "text" || splitted[1] === "select" ) {
+  if (splitted[1] === "text" || splitted[1] === "select") {
     if (splitted[2] === "contains") {
       return { [search]: { contains: splitted[0] } };
     } else if (splitted[2] === "startsWith") {
@@ -143,7 +159,7 @@ function columnQueryBuilder(search: string, value: string) {
         },
       };
     }
-  }else if  (splitted[1]==='date'){
+  } else if (splitted[1] === "date") {
     if (splitted[2] === "contains") {
       return { [search]: { contains: new Date(splitted[0]).getTime() } };
     } else if (splitted[2] === "startsWith") {
@@ -151,11 +167,10 @@ function columnQueryBuilder(search: string, value: string) {
     } else if (splitted[2] === "endsWith") {
       return { [search]: { endsWith: splitted[0] } };
     } else if (splitted[2] == "equals") {
-      console.log(new Date(splitted[0]),'gerg')
+      console.log(new Date(splitted[0]), "gerg");
       return { [search]: { equals: new Date(splitted[0]) } };
     } else if (splitted[2] == "notEquals") {
       return { [search]: { not: new Date(splitted[0]) } };
-
     } else if (splitted[2] == "between") {
       let subSplit = splitted[0].split(",");
       return {
@@ -174,16 +189,26 @@ function columnQueryBuilder(search: string, value: string) {
       };
     } else if (splitted[2] == "greaterThan") {
       return { [search]: { gt: new Date(splitted[0]) } };
-
     } else if (splitted[2] == "greaterThanOrEqual") {
       return { [search]: { gte: new Date(splitted[0]) } };
-
     } else if (splitted[2] == "lessThan") {
       return { [search]: { lt: new Date(splitted[0]) } };
-
     } else if (splitted[2] == "lessThanOrEqual") {
       return { [search]: { lte: new Date(splitted[0]) } };
-
     }
   }
+}
+
+function globalFilterQueryBuilder(globalFilter: string, fields: string[]) {
+  const orConditions = fields.map((field) => ({
+    [field]: {
+      contains: globalFilter,
+    },
+  }));
+
+  const queryObject = {
+    OR: orConditions,
+  };
+
+  return queryObject;
 }
