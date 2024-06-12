@@ -63,6 +63,10 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
       {
         accessorKey:'status',
         header: 'Status',
+        Cell: ({ cell }) => {
+          return <div>{cell.getValue()?'true':'false'}</div>;
+        },
+    
         filterVariant:'text'
       },
       {

@@ -2,7 +2,10 @@ import { prisma } from "@/config/prisma-client";
 import { channel } from "diagnostics_channel";
 
 export async function fetchChannels(search: object, currentPage: number = 1) {
-  let query = {};
+  let query = {
+  
+
+  };
   console.log(search, "ser");
   for (let items in search) {
     const subQuery = columnQueryBuilder(items, search[items]);
@@ -14,6 +17,8 @@ export async function fetchChannels(search: object, currentPage: number = 1) {
   console.log(query);
   const contents = await prisma.channel.findMany({
     where: query,
+   skip:currentPage*5,
+   take:5
   });
 
   return {
