@@ -41,7 +41,6 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
   
 
   const [globalFilter, setGlobalFilter] = useState('');
-  console.log(globalFilter,'glob')
   const searchParams=useSearchParams()
     const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: Number(searchParams.get('page'))||0,
@@ -49,8 +48,14 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
   });
 
   const [columnFilters, setColumnFilters] = useState([]);
-  const [columnFilterFns, setColumnsFilterMode] = useState({})
-    console.log(columnFilters,'fil')
+  const [columnFilterFns, setColumnsFilterMode] = useState({
+    name: 'contains',
+    status: 'contains',
+    type: 'contains',
+    country: 'contains',
+    fans: 'between',
+    
+  })
   useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})),globalFilter);
   const columns = useMemo<MRT_ColumnDef<Channel>[]>(
     () => [

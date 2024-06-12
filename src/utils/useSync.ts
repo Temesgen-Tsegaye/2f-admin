@@ -37,8 +37,10 @@ export default function useSync(
 
       return
     }
+    // params.set("filter",JSON.stringify(columnFilters));
+
+
     for (let item of columnFilters) {
-      console.log(item.value.$d);
       if (item.filterValue == "date") {
         params.set(
           `${item.id}`,
@@ -58,5 +60,5 @@ export default function useSync(
       //   params.set('page','0')
     }
     router.push(`${pathName}?${params.toString()}`);
-  }, [pagination.pageIndex, pagination.pageSize, columnFilters]);
+  }, [pagination.pageIndex, pagination.pageSize,globalFilter,columnFilters]);
 }
