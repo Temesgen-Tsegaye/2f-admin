@@ -40,13 +40,12 @@ export default function useSync(
     }
     // params.set("filter",JSON.stringify(columnFilters));
 
-
+     
     for (let item of columnFilters) {
       if(item.filterValue=='date-range' || item.filterValue=='time-range' || item.filterValue=='datetime-range'){
-        console.log(item,'columnFiltersvvv')
-        let rr=columnFilters.filter((items)=>items.value.length==2 && items.filterValue=='datetime-range')
-        console.log(rr[0].value,'rr')
-        console.log(item,'rb')
+        
+        console.log(item.value,'ccccc')
+      
         params.set(
           `${item.id}`,
           `${JSON.stringify(item.value)}@@@@${item.filterValue}@@@@${item.filterMode}`
