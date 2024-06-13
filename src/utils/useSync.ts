@@ -39,12 +39,13 @@ export default function useSync(
       return
     }
     // params.set("filter",JSON.stringify(columnFilters));
+   console.log(columnFilters,'columnFiltersOuter')
 
-     
     for (let item of columnFilters) {
-      if(item.filterValue=='date-range' || item.filterValue=='time-range' || item.filterValue=='datetime-range'){
-        
-        console.log(item.value,'ccccc')
+      if(item.filterValue=='date-range'){
+         
+        let value=columnFilters.filter((items)=>items.id==item.id)
+  
       
         params.set(
           `${item.id}`,
@@ -52,7 +53,21 @@ export default function useSync(
         );
       
 
-      } else if (item.filterValue == "date" || item.filterValue == "datetime" || item.filterValue == "time") {
+      }else if(item.filterValue=='time-range'){
+        params.set(
+          `${item.id}`,
+          `${JSON.stringify(item.value)}@@@@${item.filterValue}@@@@${item.filterMode}`
+        );
+      }else if(item.filterValue=='datetime-range'){
+         console.log(columnFilters,'columnFilters Inner')
+        console.log(item.value,'valuenew')
+        params.set(
+          `${item.id}`,
+          `${JSON.stringify(item.value)}@@@@${item.filterValue}@@@@${item.filterMode}`
+        );
+      }
+      
+      else if (item.filterValue == "date" || item.filterValue == "datetime" || item.filterValue == "time") {
         params.set(
           `${item.id}`,
           `${item.value.$d}@@@@${item.filterValue}@@@@${item.filterMode}`

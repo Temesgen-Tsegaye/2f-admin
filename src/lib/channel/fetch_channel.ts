@@ -162,7 +162,9 @@ function columnQueryBuilder(search: string, value: string) {
       };
     }
   } else if (splitted[1] === "date" || splitted[1] === "datetime" || splitted[1] === "time") {
-    if (splitted[2] === "contains") {
+    if(splitted[0]=="" || splitted[0]==null||splitted[0]==undefined){
+        return {}
+    }else if (splitted[2] === "contains") {
       return { [search]: { contains: new Date(splitted[0]).getTime() } };
     } else if (splitted[2] === "startsWith") {
       return { [search]: { startsWith: new Date(splitted[0]) } };
@@ -202,10 +204,11 @@ function columnQueryBuilder(search: string, value: string) {
        console.log(arry.length,'arry')
     if (splitted[2] === "between") {
 
-    return arry.length?{ [search]: { gt: arry[0], lt: arry[1] } }:undefined;
+    return !(arry[0]==undefined ||arry[1]==undefined || arry[0]=='' || arry[1]=='')?{ [search]: { gt: arry[0], lt: arry[1] } }:{};
     } else if (splitted[2] === "betweenInclusive") {
 
-      return { [search]: { gte: arry[0], lte: arry[1] } };
+      return !(arry[0]==undefined || arry[1]==undefined || arry[0]=='' || arry[1]=='')?{ [search]: { gte: arry[0], lte: arry[1] } }:{};
+
 
     }
   }
