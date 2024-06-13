@@ -9,8 +9,9 @@ export default function useSync(
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  console.log(columnFilters,'columnFilters')
   React.useEffect(() => {
+
+
     const params = new URLSearchParams(searchParams);
     const columnFilterIds = columnFilters.map((item) => item.id);
     params.forEach((value, key) => {
@@ -41,7 +42,18 @@ export default function useSync(
 
 
     for (let item of columnFilters) {
-      if (item.filterValue == "date") {
+      if(item.filterValue=='date-range' || item.filterValue=='time-range' || item.filterValue=='datetime-range'){
+        console.log(item,'columnFiltersvvv')
+        let rr=columnFilters.filter((items)=>items.value.length==2 && items.filterValue=='datetime-range')
+        console.log(rr[0].value,'rr')
+        console.log(item,'rb')
+        params.set(
+          `${item.id}`,
+          `${JSON.stringify(item.value)}@@@@${item.filterValue}@@@@${item.filterMode}`
+        );
+      
+
+      } else if (item.filterValue == "date" || item.filterValue == "datetime" || item.filterValue == "time") {
         params.set(
           `${item.id}`,
           `${item.value.$d}@@@@${item.filterValue}@@@@${item.filterMode}`

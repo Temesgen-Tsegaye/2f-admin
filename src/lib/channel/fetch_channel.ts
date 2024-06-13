@@ -2,14 +2,7 @@ import { prisma } from "@/config/prisma-client";
 import { equal } from "assert";
 import { channel } from "diagnostics_channel";
 
-export async function fetchChannels(search: object, page:any) {
-
-       
-      
-     if(page){
-     }
-    
-             
+export async function fetchChannels(search: object, page: any) {
   if (search.globalFilter) {
     const query = globalFilterQueryBuilder(search.globalFilter, [
       "name",
@@ -39,8 +32,8 @@ export async function fetchChannels(search: object, page:any) {
   }
   const contents = await prisma.channel.findMany({
     where: query,
-    skip: page ?JSON.parse(page).pageIndex * 5:0,
-    take: page? JSON.parse(page).pageSize:5,
+    skip: page ? JSON.parse(page).pageIndex * 5 : 0,
+    take: page ? JSON.parse(page).pageSize : 5,
   });
 
   return {
@@ -53,18 +46,13 @@ function columnQueryBuilder(search: string, value: string) {
   let splitted = value.split("@@@@");
 
   if (splitted[1] === "checkbox") {
-
-    return  { [search]: { equals: splitted[0]==="true"?true:false } };
-  }else if (splitted[1] === "text" || splitted[1] === "select") {
-    if(splitted[2] === "fuzzy"){ 
-
-  
-
-    }else if (splitted[2] === "contains") {
+    return { [search]: { equals: splitted[0] === "true" ? true : false } };
+  } else if (splitted[1] === "text" || splitted[1] === "select") {
+    if (splitted[2] === "fuzzy") {
+    } else if (splitted[2] === "contains") {
       return { [search]: { contains: splitted[0] } };
     } else if (splitted[2] === "startsWith") {
-
-      return  { [search]: { startsWith: splitted[0] } };
+      return { [search]: { startsWith: splitted[0] } };
     } else if (splitted[2] === "endsWith") {
       return { [search]: { endsWith: splitted[0] } };
     } else if (splitted[2] == "equals") {
@@ -96,7 +84,7 @@ function columnQueryBuilder(search: string, value: string) {
     } else if (splitted[2] == "lessThanOrEqual") {
       return { [search]: { lte: splitted[0] } };
     }
-  } else if (splitted[1] === "multiSelect") {
+  } else if (splitted[1] === "multiSelect" || splitted[1] == "autocomplete") {
     if (splitted[2] === "contains") {
       let subSplit = splitted[0].split(",");
       let searchArray = subSplit.map((item) => {
@@ -155,7 +143,7 @@ function columnQueryBuilder(search: string, value: string) {
       });
       return { OR: searchArry };
     }
-  } else if (splitted[1] === "range") {
+  } else if (splitted[1] === "range" || splitted[1] === "range-slider") {
     if (splitted[2] == "between") {
       let subSplit = splitted[0].split(",");
       return {
@@ -173,7 +161,7 @@ function columnQueryBuilder(search: string, value: string) {
         },
       };
     }
-  } else if (splitted[1] === "date") {
+  } else if (splitted[1] === "date" || splitted[1] === "datetime" || splitted[1] === "time") {
     if (splitted[2] === "contains") {
       return { [search]: { contains: new Date(splitted[0]).getTime() } };
     } else if (splitted[2] === "startsWith") {
@@ -209,9 +197,19 @@ function columnQueryBuilder(search: string, value: string) {
     } else if (splitted[2] == "lessThanOrEqual") {
       return { [search]: { lte: new Date(splitted[0]) } };
     }
+  } else if (splitted[1] === "date-range" || splitted[1] === "datetime-range" || splitted[1] === "time-range") {
+    let arry=JSON.parse(splitted[0])
+       console.log(arry.length,'arry')
+    if (splitted[2] === "between") {
+
+    return arry.length?{ [search]: { gt: arry[0], lt: arry[1] } }:undefined;
+    } else if (splitted[2] === "betweenInclusive") {
+
+      return { [search]: { gte: arry[0], lte: arry[1] } };
+
+    }
   }
 }
-
 function globalFilterQueryBuilder(globalFilter: string, fields: string[]) {
   const orConditions = fields.map((field) => ({
     [field]: {

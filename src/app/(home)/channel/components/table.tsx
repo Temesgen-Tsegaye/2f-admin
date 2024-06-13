@@ -34,12 +34,14 @@ const mapper={
   type:'select',
   country:'multiSelect',
   fans:'range',
-  date:'date'
+  date:'date',
+  createdAt:'datetime-range',
+  updatedAt:'time-range',
+
 }
 
 const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,type:string}[],count:number}) => {
   
-     console.log(data,'data')  
 
   const [globalFilter, setGlobalFilter] = useState('');
   const searchParams=useSearchParams()
@@ -76,8 +78,8 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
       {
         accessorKey: 'type',
         header: 'Type',
-        filterVariant:'select',
-        filterSelectOptions:['A','B','C','D'],
+        filterVariant:'autocomplete',
+        filterSelectOptions:["News","Tech","Food","Fashion"],
        
       },
       {
@@ -90,14 +92,42 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
       {
         accessorKey: 'fans',
         header: 'No of Fans',
-        filterVariant:'range',
+        filterVariant:'range-slider',
+        muiFilterSliderProps: {
+          marks: true,
+          max: 2000, 
+          min: 0, 
+          step: 50,
+          
+        },
     
       },
       {
         accessorKey: 'date',
         header: 'Date',
         filterVariant:'date',
-        Cell: ({ row }) => new Date(row.original.date).toLocaleDateString(),
+        Cell: ({ row }) => new Date(row.original.date).toUTCString(),
+       
+      },
+      {
+        accessorKey: 'date',
+        header: 'Date time',
+        filterVariant:'datetime',
+        Cell: ({ row }) => new Date(row.original.date).toUTCString()
+       
+      },
+      {
+        accessorKey: 'createdAt',
+        header: 'Date Range',
+        filterVariant:'datetime-range',
+        Cell: ({ row }) => new Date(row.original.date).toUTCString()
+       
+      },
+      {
+        accessorKey: 'updatedAt',
+        header: 'Time',
+        filterVariant:'time-range',
+        Cell: ({ row }) => new Date(row.original.date).toUTCString()
        
       },
      

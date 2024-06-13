@@ -39,14 +39,16 @@ model Content {
 }
 
 model Channel {
-  id       Int       @id @default(autoincrement())
-  name     String
-  status   Boolean   @default(true)
-  type     String
-  country  String
-  fans     Int
-  date     DateTime
-  contents Content[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  status    Boolean   @default(true)
+  type      String
+  country   String
+  fans      Int
+  date      DateTime
+  createdAt DateTime
+  updatedAt DateTime
+  contents  Content[]
 }
 
 model Type {
