@@ -46,8 +46,18 @@ function columnQueryBuilder(search: string, value: string) {
   let splitted = value.split("@@@@");
 
   if (splitted[1] === "checkbox") {
+    if (splitted[0] === "" || splitted === null || splitted[0] === undefined) {
+      return {};
+    }
     return { [search]: { equals: splitted[0] === "true" ? true : false } };
-  } else if (splitted[1] === "text" || splitted[1] === "select") {
+  } else if (
+    splitted[1] === "text" ||
+    splitted[1] === "select" ||
+    splitted[1] === "autoComplete"
+  ) {
+    if (splitted[0] === "" || splitted === null || splitted[0] === undefined) {
+      return {};
+    }
     if (splitted[2] === "fuzzy") {
     } else if (splitted[2] === "contains") {
       return { [search]: { contains: splitted[0] } };
@@ -84,7 +94,10 @@ function columnQueryBuilder(search: string, value: string) {
     } else if (splitted[2] == "lessThanOrEqual") {
       return { [search]: { lte: splitted[0] } };
     }
-  } else if (splitted[1] === "multiSelect" || splitted[1] == "autocomplete") {
+  } else if (splitted[1] === "multiSelect") {
+    if (splitted[0]?.split(",")?.length === 0) {
+      return {};
+    }
     if (splitted[2] === "contains") {
       let subSplit = splitted[0].split(",");
       let searchArray = subSplit.map((item) => {
@@ -144,6 +157,9 @@ function columnQueryBuilder(search: string, value: string) {
       return { OR: searchArry };
     }
   } else if (splitted[1] === "range" || splitted[1] === "range-slider") {
+    if (splitted[0]?.split(",")?.length === 0) {
+      return {};
+    }
     if (splitted[2] == "between") {
       let subSplit = splitted[0].split(",");
       return {
@@ -161,10 +177,14 @@ function columnQueryBuilder(search: string, value: string) {
         },
       };
     }
-  } else if (splitted[1] === "date" || splitted[1] === "datetime" || splitted[1] === "time") {
-    if(splitted[0]=="" || splitted[0]==null||splitted[0]==undefined){
-        return {}
-    }else if (splitted[2] === "contains") {
+  } else if (
+    splitted[1] === "date" ||
+    splitted[1] === "datetime" ||
+    splitted[1] === "time"
+  ) {
+    if (splitted[0] == "" || splitted[0] == null || splitted[0] == undefined) {
+      return {};
+    } else if (splitted[2] === "contains") {
       return { [search]: { contains: new Date(splitted[0]).getTime() } };
     } else if (splitted[2] === "startsWith") {
       return { [search]: { startsWith: new Date(splitted[0]) } };
@@ -199,17 +219,31 @@ function columnQueryBuilder(search: string, value: string) {
     } else if (splitted[2] == "lessThanOrEqual") {
       return { [search]: { lte: new Date(splitted[0]) } };
     }
-  } else if (splitted[1] === "date-range" || splitted[1] === "datetime-range" || splitted[1] === "time-range") {
-    let arry=JSON.parse(splitted[0])
-       console.log(arry.length,'arry')
+  } else if (
+    splitted[1] === "date-range" ||
+    splitted[1] === "datetime-range" ||
+    splitted[1] === "time-range"
+  ) {
+    let arry = JSON.parse(splitted[0]);
+    console.log(arry.length, "arry");
     if (splitted[2] === "between") {
-
-    return !(arry[0]==undefined ||arry[1]==undefined || arry[0]=='' || arry[1]=='')?{ [search]: { gt: arry[0], lt: arry[1] } }:{};
+      return !(
+        arry[0] == undefined ||
+        arry[1] == undefined ||
+        arry[0] == "" ||
+        arry[1] == ""
+      )
+        ? { [search]: { gt: arry[0], lt: arry[1] } }
+        : {};
     } else if (splitted[2] === "betweenInclusive") {
-
-      return !(arry[0]==undefined || arry[1]==undefined || arry[0]=='' || arry[1]=='')?{ [search]: { gte: arry[0], lte: arry[1] } }:{};
-
-
+      return !(
+        arry[0] == undefined ||
+        arry[1] == undefined ||
+        arry[0] == "" ||
+        arry[1] == ""
+      )
+        ? { [search]: { gte: arry[0], lte: arry[1] } }
+        : {};
     }
   }
 }
