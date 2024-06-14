@@ -41,15 +41,12 @@ export default function useSync(
         return item;
       }
     } else if (!(item.value?.length === 0)) {
-      console.log(item, "item.value");
       return item;
 
     }
   }
   });
-console.log(filterdFilter,'filterdFilter')
   React.useEffect(() => {
-    console.log(columnFilters, "columnFilters");
 
     const params = new URLSearchParams(searchParams);
 
@@ -77,7 +74,6 @@ console.log(filterdFilter,'filterdFilter')
       return;
     }
     // params.set("filter",JSON.stringify(columnFilters));
-    console.log(columnFilters, "columnFiltersOuter");
 
     for (let item of filterdFilter) {
       if (item.filterValue == "date-range") {

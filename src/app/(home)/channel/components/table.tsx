@@ -9,6 +9,7 @@ import {
   type MRT_SortingState,
 } from 'material-react-table';
 import useSync from '@/utils/useSync';
+import  useParse from '@/utils/useParse';
 import { useSearchParams } from 'next/navigation';
 type UserApiResponse = {
   data: Array<Channel>;
@@ -42,29 +43,29 @@ const mapper={
 
 const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,type:string}[],count:number}) => {
   
-
-  const [globalFilter, setGlobalFilter] = useState('');
+    const {columnFiltersInitial,globalFilterInitial,paginationInitial,filterMode}=useParse({
+      name:'equals',
+      status:'equals',
+      type:'equals',
+      country:'equals',
+      fans:'between',
+      date:'between',
+      createdAt:'between',
+      updatedAt:'between',
+    })
+  const [globalFilter, setGlobalFilter] = useState(globalFilterInitial);
   const searchParams=useSearchParams()
     const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex:searchParams.get('page')?JSON.parse(searchParams.get('page')).pageIndex:0,
-    pageSize:searchParams.get('page')?JSON.parse(searchParams.get('page')).pageSize:5,
+    pageIndex:paginationInitial.pageIndex,
+    pageSize:paginationInitial.pageSize,
    });
 
-  const [columnFilters, setColumnFilters] = useState([{
-     
+  const [columnFilters, setColumnFilters] = useState(
+    columnFiltersInitial
+  );
 
-  }]);
-   console.log(columnFilters,'columnFilters')
-  const [columnFilterFns, setColumnsFilterMode] = useState({
-     name:'contains',
-     type:'equals',
-     country:'equals',
-     fans:'between',
-     date:'greaterThan',
-     createdAt:'between',
-     updatedAt:'between',
-     date:'greaterThan',
-  })
+  
+  const [columnFilterFns, setColumnsFilterMode] = useState(filterMode)
   useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})),globalFilter);
   const columns = useMemo<MRT_ColumnDef<Channel>[]>(
     () => [

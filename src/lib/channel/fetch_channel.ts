@@ -59,6 +59,7 @@ function columnQueryBuilder(search: string, value: string) {
       return {};
     }
     if (splitted[2] === "fuzzy") {
+      
     } else if (splitted[2] === "contains") {
       return { [search]: { contains: splitted[0] } };
     } else if (splitted[2] === "startsWith") {
@@ -225,7 +226,6 @@ function columnQueryBuilder(search: string, value: string) {
     splitted[1] === "time-range"
   ) {
     let arry = JSON.parse(splitted[0]);
-    console.log(arry.length, "arry");
     if (splitted[2] === "between") {
       return !(
         arry[0] == undefined ||
