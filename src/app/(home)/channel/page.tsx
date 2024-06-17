@@ -11,12 +11,13 @@ export default async function Page({
   searchParams?: {
     query?: string;
     page?: string;
+    filter: string;
+    sorting: string;
+    globalFilter: string;
   };
 }) {
-  const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
-  const pageSize = Number(searchParams?.pageSize) || 5;
-  const data= await fetchChannels(searchParams,searchParams?.page)
+
+  const data= await fetchChannels(searchParams||{});
   
   
   return (

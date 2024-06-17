@@ -1,6 +1,7 @@
 import { useSearchParams } from "next/navigation";
+import { parse } from "path";
 
-export default function useParse(dafaultFilterModes:{defaultFilterMode:string}) {
+export default function useParse(dafaultFilterModes:{[key:number|string]:string}) {
   const searchParams = useSearchParams();
 
   let parsed = {
@@ -8,6 +9,7 @@ export default function useParse(dafaultFilterModes:{defaultFilterMode:string}) 
     globalFilterInitial: '',
     columnFiltersInitial: [],
     filterMode:dafaultFilterModes,
+    sorting:[]
   };
 
   const params = new URLSearchParams(searchParams);
@@ -20,26 +22,23 @@ export default function useParse(dafaultFilterModes:{defaultFilterMode:string}) 
       }
     } else if (key === "globalFilter") {
       parsed.globalFilterInitial = value;
+    } else if(key==="sorting") {
+        parsed.sorting=JSON.parse(value)
     } else {
-      const [filterValue, filterType, filterMode] = value.split("@@@@");
-      let parsedValue;
-        parsed.filterMode[key]=filterMode
-      if (filterType === "date-range" || filterType === "datetime-range" || filterType === "time-range") {
-        parsedValue = JSON.parse(filterValue);
-      } else if (filterType === "date" || filterType === "datetime" || filterType === "time") {
-        parsedValue = new Date(filterValue);
-      } else if (filterType === "multiSelect") {
-        parsedValue = filterValue.split(',');
-      } else {
-        parsedValue = filterValue;
-      }
+    parsed.columnFiltersInitial=JSON.parse(value);
+    const extractedObject= Object.fromEntries(
+    parsed.columnFiltersInitial.map(({ id, filterMode }) => [id, filterMode])
+    );
 
-      parsed.columnFiltersInitial.push({
-        id: key,
-        value: parsedValue,
-       
-      });
+    parsed.filterMode={
+      ...parsed.filterMode,
+      ...extractedObject
     }
+
+  }
+
+     
+    
   });
 
 

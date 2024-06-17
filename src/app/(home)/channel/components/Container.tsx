@@ -15,6 +15,12 @@ export interface Channel {
   id: number;
   name: string;
   status: boolean;
+  country:string;
+  fans:number;
+  date:object;
+  createdAt:object;
+  updatedAt:object;
+  
 }
 
 export default function Container({
@@ -30,35 +36,7 @@ export default function Container({
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
-  const columns: ColumnDef<Channel>[] = [
-    {
-      accessorKey: "name",
-      header: "Name",
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      enableHiding: false,
-      cell: ({ row }) => (
-        <Box>
-          <SwitchSatus checked={row.original.status} id={row.original.id} />
-        </Box>
-      ),
-    },
-    {
-      accessorKey: "action",
-      header: "Action",
-
-      cell: ({ row }) => (
-        <Action
-          id={row.original.id}
-          name={row.original.name}
-          status={row.original.status}
-        />
-      ),
-    },
-  ];
-
+ 
   return (
     <Paper sx={{padding:'1rem',width:'100%', }}  elevation={3}>
       <Box
@@ -77,7 +55,7 @@ export default function Container({
       </Box>
         <AddChannel open={open} handelClose={handleClose} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DataTable data={channels} count={count} columns={columns} />
+      <DataTable data={channels} count={count||0}  />
           </LocalizationProvider>
 
       <Box sx={{display:'flex',justifyContent:'center',marginTop:'2rem'}}>

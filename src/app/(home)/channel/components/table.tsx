@@ -11,6 +11,7 @@ import {
 import useSync from '@/utils/useSync';
 import  useParse from '@/utils/useParse';
 import { useSearchParams } from 'next/navigation';
+import {Channel} from "./Container"
 type UserApiResponse = {
   data: Array<Channel>;
   
@@ -18,14 +19,7 @@ type UserApiResponse = {
   };
 
 
-type Channel = {
- id:number
-  name: string;
-  status: boolean;
-  type:string
-  date:object
- 
-};
+
 
   
 
@@ -39,9 +33,9 @@ const mapper={
   createdAt:'datetime-range',
   updatedAt:'time-range',
 
-}
+} as const
 
-const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,type:string}[],count:number}) => {
+const ChannelTable=({data,count}:{data:Channel[],count:number}) => {
   
     const {columnFiltersInitial,globalFilterInitial,paginationInitial,filterMode}=useParse({
       name:'equals',
@@ -62,7 +56,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
     pageSize:paginationInitial.pageSize,
    });
 
-  const [columnFilters, setColumnFilters] = useState(
+  const [columnFilters, setColumnFilters] = useState<{id:string,value:any}[]>(
     columnFiltersInitial
   );
 
@@ -70,7 +64,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
   const [columnFilterFns, setColumnsFilterMode] = useState(filterMode)
 
   const memoizedColumnFilters = useMemo(
-    () => columnFilters.map((item) => ({ ...item, filterValue: mapper[item.id], filterMode: columnFilterFns[item.id] })),
+    () => columnFilters.map((item) => ({ ...item, filterValue: mapper[item.id as keyof typeof mapper], filterMode: columnFilterFns[item.id] })),
     [columnFilters, columnFilterFns]
   );
   useSync(pagination,sorting,memoizedColumnFilters,globalFilter);
@@ -126,28 +120,28 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
         accessorKey: 'date',
         header: 'Date',
         filterVariant:'date',
-        Cell: ({ row }) => new Date(row.original.date).toUTCString(),
+        Cell: ({ row }) => new Date(`${row.original.date}`).toUTCString(),
        
       },
       {
         accessorKey: 'date',
         header: 'Date time',
         filterVariant:'datetime',
-        Cell: ({ row }) => new Date(row.original.date).toUTCString()
+        Cell: ({ row }) => new Date(`${row.original.date}`).toUTCString()
        
       },
       {
         accessorKey: 'createdAt',
         header: 'Date Range',
         filterVariant:'datetime-range',
-        Cell: ({ row }) => new Date(row.original.date).toUTCString()
+        Cell: ({ row }) => new Date(`${row.original.date}` ).toUTCString()
        
       },
       {
         accessorKey: 'updatedAt',
         header: 'Time',
         filterVariant:'time-range',
-        Cell: ({ row }) => new Date(row.original.date).toUTCString()
+        Cell: ({ row }) => new Date(`${row.original.date}`).toUTCString()
        
       },
      
@@ -157,7 +151,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
   );
   
 
-  //
+  
   
 
 
@@ -166,7 +160,7 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
 
 
 
-  //
+  
     
   const table = useMaterialReactTable({
     columns,
