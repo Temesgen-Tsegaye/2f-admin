@@ -1,9 +1,11 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { Box, Paper } from '@mui/material'
 import Card from './card'
 import PiChart from './pi_chart'
 import LineChart from './line_chart'
 import { Prisma } from '@prisma/client'
+import { socket } from '@/utils/socket/socket-client'
 export default function Container({counts,pie,progCount}:{progCount:number, counts:{
     userCount: number;
     programCount: number;
@@ -13,8 +15,24 @@ export default function Container({counts,pie,progCount}:{progCount:number, coun
         id: number;
     };
 })[]})
-
 {
+
+const [realCounts,setRealCounts]=useState(counts.channelCount)
+
+
+React.useEffect(() => {
+  const handleAddChannel = (count: number) => {
+    console.log(count,'cou')
+    setRealCounts(count);
+  };
+  socket.on('channel', handleAddChannel);
+
+  return () => {
+    socket.off('channel', handleAddChannel);
+  };
+}, []);
+
+
 
   return (
     <Paper sx={{height:"300vh",padding:"3rem",display:'flex',flexDirection:"column",gap:'3rem'}} elevation={3}>
@@ -22,7 +40,7 @@ export default function Container({counts,pie,progCount}:{progCount:number, coun
      {[
         {name:"user",count:counts.userCount},
         {name:"Program",count:counts.programCount},
-        {name:"Channel",count:counts.channelCount},
+        {name:"Channel",count:realCounts},
 
      ].map((item)=><Card key={item.name} name={item.name} count={item.count}/>)}
 </Box>

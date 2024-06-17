@@ -21,6 +21,8 @@ export default function EditModal({
   const [newName, setName] = React.useState("");
   
 
+  
+
   return (
     <div>
       <Modal

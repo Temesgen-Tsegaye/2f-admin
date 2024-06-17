@@ -2,6 +2,8 @@
 import { prisma } from "@/config/prisma-client"
 import { revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
+import { io } from "@/utils/socket/io.js";
+import { Console } from "console";
 export async function toggleStatus(id:number,status:boolean){
        
     const updatedChannel = await prisma.channel.update({
@@ -35,11 +37,21 @@ export async function createChannel(name:string){
 
           const created=await prisma.channel.create({
              data:{
-                name:name
+                name:name,
+                country:'UK',
+                createdAt:new Date(),
+                updatedAt:new Date(),
+                date:new Date(),
+                fans:0,
+                type:'TV',
+                status:true,
+                
+
+              
              }  
         }
           )
-
+       
 
           revalidatePath('/channel')
 

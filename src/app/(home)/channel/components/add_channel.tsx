@@ -8,16 +8,20 @@ import { TextField } from "@mui/material";
 import { updateName } from "@/lib/channel/server_actions";
 import { createChannel } from "@/lib/channel/server_actions";
 import { toast } from "react-toastify";
+import { socket } from "@/utils/socket/socket-client";
 export default function AddChannel({
   open,
   handelClose,
+  count
  
 }: {
   
   open: boolean;
   handelClose: () => void;
+  count:number
 }) {
   const [name, setName] = React.useState("");
+ 
 
   return (
     <div>
@@ -74,7 +78,7 @@ export default function AddChannel({
           <Button
             variant="contained"
             sx={{ bgcolor: "#181A41",width:"30%"}}
-            onClick={() =>createChannel(name).then(()=>toast.success("Added")).catch(()=>toast.error("error"))}
+            onClick={() =>createChannel(name).then(()=>toast.success("Added")).then(()=>socket.emit('channel',count+1)).catch(()=>toast.error("error"))}
           >
             Add
           </Button>

@@ -53,7 +53,7 @@ export default function Container({
           backgroundColor: '#000222', 
         },}} onClick={()=>setOpen(true)}>Add Channel</Button>
       </Box>
-        <AddChannel open={open} handelClose={handleClose} />
+        <AddChannel open={open} handelClose={handleClose} count={count || 0} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DataTable data={channels} count={count||0}  />
           </LocalizationProvider>
