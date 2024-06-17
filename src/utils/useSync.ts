@@ -1,16 +1,39 @@
-import React from "react";
+import React,{useEffect,useMemo} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PaginationState } from "@tanstack/table-core";
 export default function useSync(
   pagination: PaginationState,
+  sorting:any,
   columnFilters: any,
   globalFilter: string
 ) {
+
+
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
-  const filterdFilter = columnFilters.filter((item) => {
+  useEffect(() => {
+    console.log('Sorting changed:', sorting);
+  }, [sorting]);
+
+  useEffect(() => {
+    console.log('Global filter changed:', globalFilter);
+  }, [globalFilter]);
+
+  useEffect(() => {
+    console.log('Pagination changed:', pagination);
+  }, [pagination]);
+
+  useEffect(() => {
+    console.log('Column filters changed:', columnFilters);
+  }, [columnFilters]);
+
+ 
+
+
+  const filterdFilter = useMemo(() => columnFilters.filter((item) => {
      if(item.filterValue!==undefined){
 
        if (
@@ -45,7 +68,7 @@ export default function useSync(
 
     }
   }
-  });
+  }), [columnFilters]);
   React.useEffect(() => {
 
     const params = new URLSearchParams(searchParams);
@@ -59,6 +82,9 @@ export default function useSync(
     });
 
     params.set("page", JSON.stringify(pagination));
+  
+    params.set("sorting", JSON.stringify(sorting));
+    
     if (!globalFilter) {
       params.delete("globalFilter");
     }
@@ -121,5 +147,5 @@ export default function useSync(
       }
     }
     router.push(`${pathName}?${params.toString()}`);
-  }, [pagination.pageIndex, pagination.pageSize, globalFilter, filterdFilter]);
+  }, [pagination.pageIndex, pagination.pageSize,sorting, globalFilter, filterdFilter]);
 }

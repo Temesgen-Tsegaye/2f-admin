@@ -4,6 +4,7 @@ import { prisma } from "@/config/prisma-client";
 export const BASE_PATH = "/api/auth";
 
 const authOptions: NextAuthConfig = {
+ 
   providers: [
     Credentials({
       name: "Credentials",

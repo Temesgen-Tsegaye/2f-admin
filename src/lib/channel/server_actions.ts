@@ -13,7 +13,7 @@ export async function toggleStatus(id:number,status:boolean){
         },
       });
 
-    await  revalidatePath('/channel?page=2');
+    await  revalidatePath('/channel');
 }
 
 export async function updateName(id:number,name:string){

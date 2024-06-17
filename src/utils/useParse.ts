@@ -17,7 +17,6 @@ export default function useParse(dafaultFilterModes:{defaultFilterMode:string}) 
       try {
         parsed.paginationInitial = JSON.parse(value);
       } catch (error) {
-        console.error("Error parsing paginationInitial state from URL", error);
       }
     } else if (key === "globalFilter") {
       parsed.globalFilterInitial = value;
@@ -33,7 +32,6 @@ export default function useParse(dafaultFilterModes:{defaultFilterMode:string}) 
         parsedValue = filterValue.split(',');
       } else {
         parsedValue = filterValue;
-        console.log(key,filterValue,'hello')
       }
 
       parsed.columnFiltersInitial.push({
@@ -44,7 +42,6 @@ export default function useParse(dafaultFilterModes:{defaultFilterMode:string}) 
     }
   });
 
-  console.log(parsed, 'parsed');
 
   return parsed;
 }

@@ -23,6 +23,11 @@ export async function fetchChannels(search: object, page: any) {
   }
 
   let query = {};
+  console.log(search,'ss')
+  const sortingQuery = buildSorting(search.sorting);
+  
+  console.log(sortingQuery,'qq')
+
   for (let items in search) {
     const subQuery = columnQueryBuilder(items, search[items]);
     query = {
@@ -34,6 +39,7 @@ export async function fetchChannels(search: object, page: any) {
     where: query,
     skip: page ? JSON.parse(page).pageIndex * 5 : 0,
     take: page ? JSON.parse(page).pageSize : 5,
+    orderBy: sortingQuery,
   });
 
   return {
@@ -259,4 +265,18 @@ function globalFilterQueryBuilder(globalFilter: string, fields: string[]) {
   };
 
   return queryObject;
+}
+
+
+
+function buildSorting(sortingQuery: string) {
+    let parsedSorting=[] 
+    if(sortingQuery){   
+    parsedSorting = JSON.parse(sortingQuery);
+    }
+
+if (!(parsedSorting[0]==undefined||parsedSorting[0]==""||parsedSorting[0]==null)) {
+          let query=[{[parsedSorting[0]?.id]:parsedSorting[0]?.desc?'desc':'asc'}];
+             return  query
+          }
 }

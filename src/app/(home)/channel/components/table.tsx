@@ -53,6 +53,8 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
       createdAt:'between',
       updatedAt:'between',
     })
+
+  const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState(globalFilterInitial);
   const searchParams=useSearchParams()
     const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -66,7 +68,12 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
 
   
   const [columnFilterFns, setColumnsFilterMode] = useState(filterMode)
-  useSync(pagination,columnFilters.map((item)=>({...item,filterValue:mapper[item.id],filterMode:columnFilterFns[item.id]})),globalFilter);
+
+  const memoizedColumnFilters = useMemo(
+    () => columnFilters.map((item) => ({ ...item, filterValue: mapper[item.id], filterMode: columnFilterFns[item.id] })),
+    [columnFilters, columnFilterFns]
+  );
+  useSync(pagination,sorting,memoizedColumnFilters,globalFilter);
   const columns = useMemo<MRT_ColumnDef<Channel>[]>(
     () => [
      
@@ -149,6 +156,17 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
     [],
   );
   
+
+  //
+  
+
+
+
+
+
+
+
+  //
     
   const table = useMaterialReactTable({
     columns,
@@ -156,17 +174,20 @@ const ChannelTable=({data,count}:{data:{id:number,name:string,status:boolean,typ
     manualPagination: true,
     enableColumnFilterModes: true,
     manualFiltering: true,
+    manualSorting: true,
     initialState: { showColumnFilters: true, },
     onColumnFilterFnsChange:setColumnsFilterMode,
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange:setPagination,
+    onSortingChange: setSorting,
     rowCount:count,
     state: {
       globalFilter,
       pagination,
       columnFilters,
-      columnFilterFns,      
+      columnFilterFns,  
+      sorting    
     },
   });
 
