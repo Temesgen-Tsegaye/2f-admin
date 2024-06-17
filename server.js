@@ -7,7 +7,6 @@ const hostname = 'localhost';
 const port = 4000;
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
-const prisma = require('./src/config/prisma-client');
 
 
 app.prepare().then(() => {
