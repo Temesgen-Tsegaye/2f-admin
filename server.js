@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 import { createChannel} from './src/lib/channel/channelReal.js';
 
 const dev = process.env.NODE_ENV !== 'production';
-const hostname = 'localhost';
+const hostname = 'http://31.220.18.188';
 const port = 4000;
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
