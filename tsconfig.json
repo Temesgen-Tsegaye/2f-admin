@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts","server.js", "src/config/prisma-client.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts","server.js", "src/config/prisma-client.ts", "src/lib/channel/channelReal.js"],
   "exclude": ["node_modules"]
 }

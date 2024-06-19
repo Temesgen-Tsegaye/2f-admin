@@ -25,10 +25,10 @@ React.useEffect(() => {
     console.log(count,'cou')
     setRealCounts(count);
   };
-  socket.on('channel', handleAddChannel);
+  socket.on('addChannel', handleAddChannel);
 
   return () => {
-    socket.off('channel', handleAddChannel);
+    socket.off('addChannel', handleAddChannel);
   };
 }, []);
 

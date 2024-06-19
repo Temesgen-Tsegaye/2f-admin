@@ -78,7 +78,7 @@ export default function AddChannel({
           <Button
             variant="contained"
             sx={{ bgcolor: "#181A41",width:"30%"}}
-            onClick={() =>createChannel(name).then(()=>toast.success("Added")).then(()=>socket.emit('channel',count+1)).catch(()=>toast.error("error"))}
+            onClick={(()=>socket.emit('addChannel',name))}
           >
             Add
           </Button>

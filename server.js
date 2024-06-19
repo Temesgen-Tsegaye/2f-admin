@@ -1,6 +1,10 @@
-const { createServer } = require('http'); 
-const next = require('next'); 
-const { Server } = require('socket.io'); 
+// const { createServer } = require('http'); 
+import { createServer } from 'http';
+// const next = require('next'); 
+import next from 'next';
+// const { Server } = require('socket.io'); 
+import { Server } from 'socket.io';
+import { createChannel} from './src/lib/channel/channelReal.js';
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
@@ -9,21 +13,17 @@ const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
   const httpServer = createServer(handler);
 
   const io = new Server(httpServer);
 
-  io.on('connection', (socket) => {
-console.log('new user connected');
-    socket.on('disconnect', () => {
-    });
-
-    socket.on('channel', async (count) => {
-      console.log('Count received', count);
-      io.emit('channel', count);
-    });
-  });
+  async function onConnection(socket){
+    console.log('a user connected');
+    await createChannel(io,socket)
+  }
+         
+  io.on('connection', await onConnection);
 
   httpServer.once('error', (err) => {
     console.error(err);
