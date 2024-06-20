@@ -44,7 +44,7 @@ const authOptions: NextAuthConfig = {
       return token;
     },
   },
-  // basePath: process.env.AUTH_URL + BASE_PATH,
+
   secret: process.env.NEXTAUTH_SECRET,
 };
 

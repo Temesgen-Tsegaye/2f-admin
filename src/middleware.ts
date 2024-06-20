@@ -12,7 +12,7 @@ export default auth((req) => {
   if (!req.auth || req.auth.user?.role=='normal') {
     return NextResponse.redirect(
       new URL(
-        `${process.env.AUTH_URL}/${BASE_PATH}/signin?callbackUrl=${encodeURIComponent(
+        `${process.env.AUTH_URL}/signin?callbackUrl=${encodeURIComponent(
           reqUrl?.pathname
         )}`,
         req.url
