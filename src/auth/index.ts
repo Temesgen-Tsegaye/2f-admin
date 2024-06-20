@@ -1,7 +1,7 @@
 import NextAuth, { User, NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/config/prisma-client";
-export const BASE_PATH = "/api/auth";
+export const BASE_PATH = "api/auth";
 
 const authOptions: NextAuthConfig = {
  
@@ -44,7 +44,7 @@ const authOptions: NextAuthConfig = {
       return token;
     },
   },
-  basePath: BASE_PATH,
+  // basePath: process.env.AUTH_URL + BASE_PATH,
   secret: process.env.NEXTAUTH_SECRET,
 };
 
