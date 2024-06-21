@@ -9,6 +9,7 @@ import { updateName } from "@/lib/channel/server_actions";
 import { createChannel } from "@/lib/channel/server_actions";
 import { toast } from "react-toastify";
 import { socket } from "@/utils/socket/socket-client";
+import { Can } from "@/utils/can";
 export default function AddChannel({
   open,
   handelClose,
@@ -75,13 +76,15 @@ export default function AddChannel({
             Cancel
           </Button>
 
-          <Button
+<Button
             variant="contained"
             sx={{ bgcolor: "#181A41",width:"30%"}}
-            onClick={(()=>socket.emit('addChannel',name))}
+            onClick={(()=>socket.emit('addChannel',{name,role:'user'}))}
           >
             Add
           </Button>
+
+         
           </Box>
          
 

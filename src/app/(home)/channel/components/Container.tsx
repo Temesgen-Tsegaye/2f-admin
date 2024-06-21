@@ -11,6 +11,8 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Can } from "@/utils/can";
+
 export interface Channel {
   id: number;
   name: string;
@@ -49,9 +51,12 @@ export default function Container({
       
         }}
       >
-         <Button sx={{bgcolor:"#000222",color:"white", ':hover': {
+        <Can I="create" a="Channel">
+        <Button sx={{bgcolor:"#000222",color:"white", ':hover': {
           backgroundColor: '#000222', 
         },}} onClick={()=>setOpen(true)}>Add Channel</Button>
+        </Can>
+         
       </Box>
         <AddChannel open={open} handelClose={handleClose} count={count || 0} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -10,6 +10,7 @@ import { Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import SessionProvider  from '@/context/session_context';
 import 'react-toastify/dist/ReactToastify.css';
+import {AbilityContextProvider} from '@/context/ability_context'
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,7 +27,9 @@ export default async  function RootLayout({
     <html lang="en">
 
       <SessionProvider session={session}>
-      <Box component="body" sx={{display:'flex'}}>
+
+        <AbilityContextProvider>
+        <Box component="body" sx={{display:'flex'}}>
          <SideNav/>
          <ToastContainer/>
 
@@ -36,6 +39,9 @@ export default async  function RootLayout({
          </Box>
 
         </Box>
+
+        </AbilityContextProvider>
+     
 
       </SessionProvider>
       

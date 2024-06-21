@@ -17,13 +17,19 @@ const authOptions: NextAuthConfig = {
           where: {
             phonenumber: credentials.phoneNumber as string,
           },
+          include: {
+          
+            role: true,
+
+          }
         });
       if(user?.password!=credentials.password){
         return null
       }
+      console.log(user,'new user')
 
         return user
-          ? { id: user.id, name: user.name, email: user.email, role: user.type }
+          ? { id: user.id, name: user.name, email: user.email, role: user.role }
           : null;
       },
     }),
@@ -39,7 +45,7 @@ const authOptions: NextAuthConfig = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = user.role.name;
       }
       return token;
     },
