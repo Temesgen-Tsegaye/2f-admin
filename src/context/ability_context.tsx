@@ -7,7 +7,6 @@ export  function AbilityContextProvider({ children }:{children:React.ReactNode})
 
        const session=useSession()
   const ability=buildAbility(session.data?.user?.role)
-  console.log(session.data?.user,'role')
   return (
     <AbilityContext.Provider value={ability}>
 
