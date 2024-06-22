@@ -16,6 +16,8 @@ export default function SideNav() {
       <Link onClick={()=>setSeected("dashboard")} href="/dashboard"><Box sx={{padding:"1rem",bgcolor:`${selected=="dashboard"?"#181A41":"white"}`,color:`${selected=="dashboard"?"white":"#181A41"}`,display:'flex',gap:'1rem'}}> <MdDashboard style={{width:"20px",height:"20px"}} /> Dash Board</Box> </Link>
       <Link onClick={()=>setSeected("cha")} href="/channel"><Box sx={{padding:"1rem",bgcolor:`${selected=="cha"?"#181A41":"white"}`,color:`${selected=="cha"?"white":"#181A41"}`,display:'flex',gap:'1rem'}}> <Image src="/channel.svg" width={20} height={20}   alt='aa' />Channel</Box> </Link>
       <Link onClick={()=>setSeected("pro")} href="/program"><Box sx={{padding:"1rem",bgcolor:`${selected=="pro"?"#181A41":"white"}`,color:`${selected=="pro"?"white":"#181A41"}`,display:'flex',gap:'1rem'}}> <Image src="/pro.svg" width={20} height={20}   alt='aa'/>Program</Box> </Link>
+      <Link onClick={()=>setSeected("use")} href="/users"><Box sx={{padding:"1rem",bgcolor:`${selected=="use"?"#181A41":"white"}`,color:`${selected=="use"?"white":"#181A41"}`,display:'flex',gap:'1rem'}}> <Image src="/pro.svg" width={20} height={20}   alt='aa'/>Users</Box> </Link>
+      <Link onClick={()=>setSeected("rol")} href="/roles"><Box sx={{padding:"1rem",bgcolor:`${selected=="rol"?"#181A41":"white"}`,color:`${selected=="rol"?"white":"#181A41"}`,display:'flex',gap:'1rem'}}> <Image src="/pro.svg" width={20} height={20}   alt='aa'/>Roles</Box> </Link>
 
 
       </Box>

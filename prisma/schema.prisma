@@ -10,9 +10,20 @@ generator client {
 }
 
 model Role {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  users User[]
+  id         Int    @id @default(autoincrement())
+  name       String @unique
+  permission Json
+  // permission    permission @relation(fields: [permission_id], references: [id])
+  users      User[]
+}
+
+model permission {
+  id         Int     @id @default(autoincrement())
+  action     String
+  subject    String
+  conditions Json
+  inverted   Boolean
+  // roles      Role[]
 }
 
 model User {
@@ -52,6 +63,7 @@ model Channel {
   type      String
   country   String
   fans      Int
+  createdBy Int
   date      DateTime
   createdAt DateTime
   updatedAt DateTime

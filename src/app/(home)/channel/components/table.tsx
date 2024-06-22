@@ -12,6 +12,9 @@ import useSync from '@/utils/useSync';
 import  useParse from '@/utils/useParse';
 import { useSearchParams } from 'next/navigation';
 import {Channel} from "./Container"
+import {deleteChannel} from "@/lib/channel/server_actions"
+import { Button } from '@mui/material';
+import  {toast} from 'react-toastify'
 type UserApiResponse = {
   data: Array<Channel>;
   
@@ -142,6 +145,12 @@ const ChannelTable=({data,count}:{data:Channel[],count:number}) => {
         header: 'Time',
         filterVariant:'time-range',
         Cell: ({ row }) => new Date(`${row.original.date}`).toUTCString()
+       
+      },
+      {
+        id: 'Actions',
+        header: 'Actions',
+        Cell: ({ row }) => <Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button>
        
       },
      

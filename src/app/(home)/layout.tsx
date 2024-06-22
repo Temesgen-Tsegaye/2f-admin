@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import SessionProvider  from '@/context/session_context';
 import 'react-toastify/dist/ReactToastify.css';
 import {AbilityContextProvider} from '@/context/ability_context'
+import {buildAbility} from '@/utils/caslPrisma'
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,12 +24,14 @@ export default async  function RootLayout({
   children: React.ReactNode;
 }>) {
    const session=await auth()
+   const ability= await buildAbility(session?.user?.role)
+
   return (
     <html lang="en">
 
       <SessionProvider session={session}>
 
-        <AbilityContextProvider>
+        <AbilityContextProvider ability={ability}>
         <Box component="body" sx={{display:'flex'}}>
          <SideNav/>
          <ToastContainer/>

@@ -2,11 +2,13 @@
 import { AbilityContext } from '@/utils/can'
 import { buildAbility } from '@/utils/caslPrisma' 
 import { useSession } from 'next-auth/react'
+import { subject } from '@casl/ability'
 
-export  function AbilityContextProvider({ children }:{children:React.ReactNode}) {
+export  function AbilityContextProvider({ children,ability }:{children:React.ReactNode,ability:any}) {
 
-       const session=useSession()
-  const ability=buildAbility(session.data?.user?.role)
+      
+  
+ 
   return (
     <AbilityContext.Provider value={ability}>
 

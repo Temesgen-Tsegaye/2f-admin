@@ -2,10 +2,14 @@ import { PrismaClient} from "@prisma/client"
 const prisma=new PrismaClient()
 
 import {buildAbility} from '../../utils/caslPrisma.js'
+import { accessibleBy } from "@casl/prisma"
 // import {auth} from '@/auth.js'
+
+
+// const permission=[{action:'create',subject:'Channel',condition:{careatedBy:auth.user?.id}},{action:'read',subject:'Channel'},{action:'update',subject:'Channel'},{action:'delete',subject:'Channel'}]
 export async function createChannel(io,socket){
 
-
+ 
 
       socket.on("addChannel", async (data) => {
         console.log(data,'dd')

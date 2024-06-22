@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
 import { io } from "@/utils/socket/io.js";
 import { Console } from "console";
+import {auth}  from '@/auth'
 export async function toggleStatus(id:number,status:boolean){
        
     const updatedChannel = await prisma.channel.update({
@@ -34,7 +35,7 @@ export async function updateName(id:number,name:string){
 }
 
 export async function createChannel(name:string){
-
+             
           const created=await prisma.channel.create({
              data:{
                 name:name,
@@ -60,7 +61,8 @@ export async function createChannel(name:string){
 
 
 export async function deleteChannel (id:number){
-    
+  const session=  await auth()
+  console.log(session?.user?.id,'sessionn',id)
     const deleteUser = await prisma.channel.delete({
         where: {
           id,
