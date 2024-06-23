@@ -2,11 +2,10 @@
   "name": "2f-admin",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "ts-node --transpileOnly server.ts",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },

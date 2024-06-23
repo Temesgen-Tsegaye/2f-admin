@@ -14,7 +14,7 @@ const { can, cannot, build } = new AbilityBuilder(createPrismaAbility);
 
 
 const permission=[{'read':'Channel'}]
-export async function  buildAbility(role){
+ export async function  buildAbility(role){
     console.log(role,'role')
           const permission=await  prisma.role.findUnique({
             where: {
@@ -39,3 +39,4 @@ console.log(permission,'permissionnn')
       return build();
 
 }
+

@@ -45,7 +45,7 @@ const authOptions: NextAuthConfig = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role.name;
+        token.role = user.role;
       }
       return token;
     },

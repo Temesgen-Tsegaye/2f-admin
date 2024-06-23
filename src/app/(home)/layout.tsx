@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
@@ -11,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import SessionProvider  from '@/context/session_context';
 import 'react-toastify/dist/ReactToastify.css';
 import {AbilityContextProvider} from '@/context/ability_context'
-import {buildAbility} from '@/utils/caslPrisma'
+import {buildAbility} from '@/utils/caslPrisma.cts'
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,7 +23,9 @@ export default async  function RootLayout({
   children: React.ReactNode;
 }>) {
    const session=await auth()
-   const ability= await buildAbility(session?.user?.role)
+   console.log(session,'sesssion')
+   const ability= await buildAbility(session?.user?.role.pemission)
+  
 
   return (
     <html lang="en">
