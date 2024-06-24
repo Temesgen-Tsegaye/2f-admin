@@ -1,13 +1,14 @@
 import { PrismaClient} from "@prisma/client"
 const prisma=new PrismaClient()
 
-const {buildAbility}=require('../../utils/caslPrisma.cts')
-console.log(buildAbility,'abili')
+// const {buildAbility}=require('../../utils/caslPrisma.ts').
+import  {buildAbility} from '../../utils/caslPrisma'
+
 import { accessibleBy } from "@casl/prisma"
 // import {auth} from '@/auth.js'
 
 
- async function createChannel(io:any,socket:any){
+ export async function createChannel(io:any,socket:any){
 
  
 
@@ -48,4 +49,3 @@ import { accessibleBy } from "@casl/prisma"
 
 }
 
-module.exports=createChannel

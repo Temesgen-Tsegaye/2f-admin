@@ -15,6 +15,8 @@ import {Channel} from "./Container"
 import {deleteChannel} from "@/lib/channel/server_actions"
 import { Button } from '@mui/material';
 import  {toast} from 'react-toastify'
+import { Can } from '@/utils/can';
+import { subject } from '@casl/ability';
 type UserApiResponse = {
   data: Array<Channel>;
   
@@ -150,7 +152,7 @@ const ChannelTable=({data,count}:{data:Channel[],count:number}) => {
       {
         id: 'Actions',
         header: 'Actions',
-        Cell: ({ row }) => <Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button>
+        Cell: ({ row }) => <Can I={"delete"} a={subject("Channel", { createdBy:row.original.createdby })}><Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button></Can>
        
       },
      
@@ -178,7 +180,20 @@ const ChannelTable=({data,count}:{data:Channel[],count:number}) => {
     enableColumnFilterModes: true,
     manualFiltering: true,
     manualSorting: true,
-    initialState: { showColumnFilters: true, },
+    initialState: { showColumnFilters: true,
+      columnOrder: [
+        'name',
+        'status',
+        'type',
+        'country',
+        'fans',
+        'date',
+        'createdAt',
+        'updatedAt',
+        'Actions',
+       
+      ],
+     },
     onColumnFilterFnsChange:setColumnsFilterMode,
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,

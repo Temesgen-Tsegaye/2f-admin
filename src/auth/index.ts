@@ -1,7 +1,6 @@
 import NextAuth, { User, NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { prisma } from "@/config/prisma-client";
-export const BASE_PATH = "api/auth";
+import { prisma } from "../config/prisma-client.ts";
 
 const authOptions: NextAuthConfig = {
  

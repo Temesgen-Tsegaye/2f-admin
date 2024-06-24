@@ -34,10 +34,10 @@
     "**/*.tsx",
     ".next/types/**/*.tsserver.ts.js",
     "src/config/prisma-client.ts",
-    "src/lib/channel/channelReal.cts",
-    "src/utils/caslPrisma.cts",
+    "src/lib/channel/channelReal.ts",
+    "src/utils/caslPrisma.ts",
     ".next/types/**/*.ts"
-  ],
+, "src/auth/index.ts"  ],
   "exclude": [
     "node_modules"
   ]

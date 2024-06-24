@@ -22,6 +22,7 @@ export interface Channel {
   date:object;
   createdAt:object;
   updatedAt:object;
+  createdby:number
   
 }
 

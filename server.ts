@@ -1,11 +1,11 @@
-const { createServer } = require('http'); 
-// import { createServer } from 'http';
-const next = require('next'); 
-// import next from 'next';
-const { Server } = require('socket.io'); 
-// import { Server } from 'socket.io';
-// import { createChannel} from './src/lib/channel/channelReal.cjs';
-const {createChannel}=require('./src/lib/channel/channelReal.cts')
+// const { createServer } = require('http'); 
+import { createServer } from 'http';
+// const next = require('next'); 
+import next from 'next';
+// const { Server } = require('socket.io'); 
+import { Server } from 'socket.io';
+import {createChannel} from './src/lib/channel/channelReal.ts';
+// const {createChannel}=require('./src/lib/channel/channelReal.cts')
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = 4000;

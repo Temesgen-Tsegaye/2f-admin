@@ -63,7 +63,7 @@ model Channel {
   type      String
   country   String
   fans      Int
-  createdBy Int
+  createdby Int
   date      DateTime
   createdAt DateTime
   updatedAt DateTime
