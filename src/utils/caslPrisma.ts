@@ -5,8 +5,6 @@ import {Prisma } from '@prisma/client';
 import { PureAbility, AbilityBuilder, subject } from '@casl/ability';
 import { createPrismaAbility} from '@casl/prisma';
 import { PrismaClient} from "@prisma/client"
-import { create } from 'domain';
-const prisma=new PrismaClient()
 
 
 

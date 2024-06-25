@@ -37,7 +37,7 @@
     "src/lib/channel/channelReal.ts",
     "src/utils/caslPrisma.ts",
     ".next/types/**/*.ts"
-, "src/auth/index.ts"  ],
+, "src/auth/index.ts", "server.ts"  ],
   "exclude": [
     "node_modules"
   ]
