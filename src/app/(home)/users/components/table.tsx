@@ -43,7 +43,6 @@ const ChannelTable = ({ data=[], count }: { data: Users[], count: number }) => {
         createdAt: 'between',
         updatedAt: 'between',
     })
-console.log(data,'DADADA')
     const [sorting, setSorting] = useState<MRT_SortingState>([]);
     const [globalFilter, setGlobalFilter] = useState(globalFilterInitial);
     const searchParams = useSearchParams()

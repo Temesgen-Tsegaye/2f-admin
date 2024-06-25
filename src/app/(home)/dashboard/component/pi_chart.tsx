@@ -25,7 +25,6 @@ export default function PiChart({pie}:{pie:(Prisma.PickEnumerable<Prisma.Content
 
   React.useEffect(() => {
     const handleAddChannel = (count: number) => {
-      console.log(count,'cou')
       setRealCounts(count);
     };
     socket.on('addChannel', handleAddChannel);

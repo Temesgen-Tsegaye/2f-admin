@@ -13,8 +13,6 @@ import { accessibleBy } from "@casl/prisma"
  
 
       socket.on("addChannel", async (data:any) => {
-        console.log(data,'dd')
-                     console.log(buildAbility(data.role).can('create','Channel'))
                if(buildAbility(data.role).can('create','Channel')){
                 // await prisma.channel.create({
                 //     data:{
@@ -32,7 +30,6 @@ import { accessibleBy } from "@casl/prisma"
         
                 //     }
                 // })
-                 console.log(await prisma.channel.count(),'cou')
                  io.emit("addChannel", await prisma.channel.count())
 
                }else{

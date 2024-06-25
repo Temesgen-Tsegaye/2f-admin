@@ -24,7 +24,6 @@ export async function updateRole(id:number,title:string,description:string){
 
 export async function createRole(name:string){
 
-          console.log(name,'name')
           const created=await prisma.role.create({
              data:{
                name,
@@ -36,7 +35,6 @@ export async function createRole(name:string){
         }
           )
 
-                 console.log(created)
           revalidatePath('/roles')
 
 

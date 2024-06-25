@@ -24,7 +24,6 @@ export async function updateUser(id:number,title:string,description:string){
 
 export async function createUser(name:string,email:string,phonenumber:string){
 
-          console.log(name,'name')
           const created=await prisma.user.create({
              data:{
                password:'1',
@@ -41,7 +40,6 @@ export async function createUser(name:string,email:string,phonenumber:string){
         }
           )
 
-                 console.log(created)
           revalidatePath('/users')
 
 

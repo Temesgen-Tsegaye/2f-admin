@@ -4,6 +4,9 @@ import { equal } from "assert";
 import { channel } from "diagnostics_channel";
 import { queryBuilderType } from "@/utils/types";
 import { globalFilterQueryBuilder,buildSorting,columnQueryBuilder } from "@/utils/filtering";
+import  {accessibleBy} from "@casl/prisma"
+import { buildAbility } from "@/utils/caslPrisma";
+import {auth}  from '@/auth'
 
 export async function fetchChannels(queryParams: {
   globalFilter?: string;
@@ -11,6 +14,26 @@ export async function fetchChannels(queryParams: {
   sorting?: string;
   page?: string;
 }) {
+
+  const session=await auth()
+  const ability=buildAbility(session?.user)
+  console.log(ability.rules,'rules')
+
+ 
+// const selected={
+
+  
+
+// }
+  
+//   const [read]=ability.rules.filter((rule)=>rule.action=='read')
+//   console.log(read,'read')
+//   if(read.fields.length){
+//      for(let items of read.fields){
+//        selected[items]=true
+//   }
+//  }
+
   if (queryParams.globalFilter) {
     const query = globalFilterQueryBuilder(queryParams.globalFilter, [
       "name",
@@ -18,8 +41,16 @@ export async function fetchChannels(queryParams: {
       "country",
     ]);
 
+
+
     const contents = await prisma.channel.findMany({
-      where: query,
+
+      where:{
+        AND:[accessibleBy(ability).Channel,{...query}]
+      },
+      // select: {
+      //   ...selected
+      // }
       
     });
 
@@ -42,12 +73,16 @@ export async function fetchChannels(queryParams: {
       };
     }
   }
-console.log(query,'query')
   const contents = await prisma.channel.findMany({
-    where: query,
+    where:{
+      AND:[accessibleBy(ability).Channel,{...query}]
+    },
     skip: queryParams.page?JSON.parse(queryParams.page).pageIndex:0,
     take:queryParams.page?JSON.parse(queryParams.page).pageSize:5,
     orderBy: sortingQuery,
+    // select: {
+    //   ...selected
+    // }
   });
 
 

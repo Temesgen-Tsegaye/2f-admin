@@ -152,7 +152,8 @@ const ChannelTable=({data,count}:{data:Channel[],count:number}) => {
       {
         id: 'Actions',
         header: 'Actions',
-        Cell: ({ row }) => <Can I={"delete"} a={subject("Channel", { createdBy:row.original.createdby })}><Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button></Can>
+        Cell: ({ row }) => <Can I={"delete"} a={subject("Channel", { createdby:row.original.createdby })}><Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button></Can>
+        // Cell: ({ row }) => <Can I={"read"} a={"Channel"} field='name' ><Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button></Can>
        
       },
      

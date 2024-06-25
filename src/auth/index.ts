@@ -25,7 +25,6 @@ const authOptions: NextAuthConfig = {
       if(user?.password!=credentials.password){
         return null
       }
-      console.log(user,'new user')
 
         return user
           ? { id: user.id, name: user.name, email: user.email, role: user.role }

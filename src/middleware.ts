@@ -8,7 +8,6 @@ export const config = {
 export default auth((req) => {
   const reqUrl = new URL(req.url);
 
-  console.log(process.env.AUTH_URL,'PRO')
   if (!req.auth || req.auth.user?.role=='normal') {
     return NextResponse.redirect(
       new URL(

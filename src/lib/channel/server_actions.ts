@@ -4,9 +4,12 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
 import { io } from "@/utils/socket/io.js";
 import { Console } from "console";
-import  {buildAbility} from '@/utils/caslPrisma'
+import  {buildAbility,} from '@/utils/caslPrisma'
 import {auth}  from '@/auth'
 import  {subject} from '@casl/ability'
+import  {accessibleBy} from "@casl/prisma"
+
+
 export async function toggleStatus(id:number,status:boolean){
        
     const updatedChannel = await prisma.channel.update({
@@ -65,16 +68,15 @@ export async function createChannel(name:string){
 
 export async function deleteChannel (id:number){
   const session=  await auth()
-  console.log(session,'ss')
-  if(buildAbility(session.user).can('delete',subject('Channel',{createdBy:Number(session.user?.id)}))){
-    const deleteUser = await prisma.channel.delete({
+  // if(buildAbility(session.user).can('delete',subject('Channel',{createdby:Number(session.user?.id)}))){
+      const ability=buildAbility(session?.user)  
+  const deleteUser = await prisma.channel.delete({
       where: {
         id,
+        AND:[accessibleBy(ability).Channel,{id,}]
       },
     })
-  }else{
-
-  }
+  
     
 
 

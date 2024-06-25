@@ -22,7 +22,6 @@ const [realCounts,setRealCounts]=useState(counts.channelCount)
 
 React.useEffect(() => {
   const handleAddChannel = (count: number) => {
-    console.log(count,'cou')
     setRealCounts(count);
   };
   socket.on('addChannel', handleAddChannel);
