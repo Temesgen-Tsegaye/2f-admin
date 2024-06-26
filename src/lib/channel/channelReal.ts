@@ -13,28 +13,11 @@ import { accessibleBy } from "@casl/prisma"
  
 
       socket.on("addChannel", async (data:any) => {
-               if(buildAbility(data.role).can('create','Channel')){
-                // await prisma.channel.create({
-                //     data:{
-                //         country:'UK',
-                //         createdAt:new Date(),
-                //         updatedAt:new Date(),
-                //         date:new Date(),
-                //         fans:0,
-                //         type:'TV',
-                //         status:true,
-                //         name:data.name
-        
-                      
-        
-        
-                //     }
-                // })
-                 io.emit("addChannel", await prisma.channel.count())
+        console.log(data,'dadadd')
+              
+                 io.emit("addChannel", await prisma.channel.count()+Number(data.name))
 
-               }else{
-                io.emit('addChannel',-2)
-               }
+               
        
  
     })

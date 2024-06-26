@@ -12,10 +12,10 @@ import useSync from '@/utils/useSync';
 import useParse from '@/utils/useParse';
 import { useSearchParams } from 'next/navigation';
 import { Users } from "./Container"
-
-
-
-
+import { Can } from '@/utils/can';
+import { Button } from '@mui/material';
+import { FaEdit } from 'react-icons/fa';
+import Action from './action';
 
 
 
@@ -32,7 +32,7 @@ const mapper = {
 } as const
 
 const ChannelTable = ({ data=[], count }: { data: Users[], count: number }) => {
-
+   console.log(data,'userJOIN')
     const { columnFiltersInitial, globalFilterInitial, paginationInitial, filterMode } = useParse({
         name: 'equals',
         status: 'equals',
@@ -77,18 +77,25 @@ const columns = useMemo<MRT_ColumnDef<Users>[]>(
                 accessorKey:'email',
                 header:'Email'
               },
-              {
-                accessorKey:'type',
-                header:'Type'
-              },
+             
               {
                 accessorKey:'password',
                 header:'Password'
               },
               {
-                accessorKey:'roleid',
-                header:'Role'
-              }
+                accessorKey:'role',
+                header:'Role',
+                Cell:({row})=>row.original.role.name
+              },
+
+              {
+                id: 'Actions',
+                header: 'Actions',
+                // Cell: ({ row }) => <Can I={"delete"} a={subject("Channel", { createdby:row.original.createdby })}><Button sx={{bgcolor:'red',color:'white'}} onClick={() =>deleteChannel(row.original.id).then(()=>toast.success('Channel Deleted'))}>Delete</Button></Can>
+                Cell: ({ row }) => <Action user_id={row.original.id} role_id={row.original.role.id} />
+               
+              },
+              
 
 
 

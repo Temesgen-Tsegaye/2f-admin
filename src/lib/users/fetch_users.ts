@@ -18,6 +18,15 @@ export async function fetchUsers(queryParams: {
 
     const users = await prisma.user.findMany({
       where: query,
+      include: {
+        role:{
+          select:{
+           id:true,
+           name:true
+           }
+        },
+      
+      }
       
     });
 
@@ -45,6 +54,9 @@ export async function fetchUsers(queryParams: {
     skip: queryParams.page?JSON.parse(queryParams.page).pageIndex:0,
     take:queryParams.page?JSON.parse(queryParams.page).pageSize:5,
     orderBy: sortingQuery,
+    include: {
+      role: true,
+    }
   });
 
 

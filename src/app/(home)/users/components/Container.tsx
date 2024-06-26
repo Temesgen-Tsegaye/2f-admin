@@ -46,7 +46,7 @@ export default function Container({
       >
          <Button sx={{bgcolor:"#000222",color:"white", ':hover': {
           backgroundColor: '#000222', 
-        },}} onClick={()=>setOpen(true)}>Add Role</Button>
+        },}} onClick={()=>setOpen(true)}>Add User</Button>
       </Box>
         <AddRole open={open} handelClose={handleClose} count={count || 0} />
         <LocalizationProvider dateAdapter={AdapterDayjs}>

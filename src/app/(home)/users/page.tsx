@@ -16,7 +16,7 @@ export default async function Page({
   };
 }) {
              const data=await fetchUsers(searchParams||{})
-  
+           throw new Error()
   
   return (
     <Box sx={{padding:'1rem',height:'90vh',width:'100%',overflowX:'scroll', overflowY:'scroll'}} >

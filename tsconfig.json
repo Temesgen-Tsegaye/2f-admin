@@ -1,14 +1,10 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    "target":"ES2016",
     "strict": true,
-    "allowImportingTsExtensions":true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "NodeNext",
@@ -23,22 +19,15 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.tsserver.ts.js",
-    "src/config/prisma-client.ts",
-    "src/lib/channel/channelReal.ts",
-    "src/utils/caslPrisma.ts",
-    ".next/types/**/*.ts"
-, "src/auth/index.ts", "server.ts"  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"],
+  "ts-node":{
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "NodeNext"
+    }
+  }
 }

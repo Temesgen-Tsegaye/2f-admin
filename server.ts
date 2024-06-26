@@ -1,11 +1,7 @@
-// const { createServer } = require('http'); 
 import { createServer } from 'http';
-// const next = require('next'); 
 import next from 'next';
-// const { Server } = require('socket.io'); 
 import { Server } from 'socket.io';
-import {createChannel} from './src/lib/channel/channelReal.ts';
-// const {createChannel}=require('./src/lib/channel/channelReal.cts')
+import {createChannel} from './src/lib/channel/channelReal';
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = 4000;
@@ -18,7 +14,7 @@ app.prepare().then(async () => {
 
   const io = new Server(httpServer);
 
-  async function onConnection(socket){
+  async function onConnection(socket: any) {
     console.log('a user connected');
     await createChannel(io,socket)
   }

@@ -5,15 +5,14 @@ import { revalidatePath } from 'next/cache';
 import { title } from "process";
 
 
-export async function updateUser(id:number,title:string,description:string){
+export async function updateUser(id:number,roleid:number){
       
-    const updatedChannel = await prisma.content.update({
+    const updatedUser = await prisma.user.update({
         where: {
           id: id,
         },
         data: {
-          title:title,
-          description:description
+           roleid:roleid
           
         },
       });
